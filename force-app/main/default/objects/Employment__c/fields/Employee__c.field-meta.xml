@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Employee__c</fullName>
+    <deleteConstraint>Restrict</deleteConstraint>
+    <description>Identifies the person associated with this employment relationship.</description>
+    <label>Employee</label>
+    <referenceTo>Contact</referenceTo>
+    <relationshipLabel>Employments</relationshipLabel>
+    <relationshipName>Employments</relationshipName>
+    <required>true</required>
+    <type>Lookup</type>
+</CustomField>
