@@ -3,6 +3,8 @@
     <description>Provides administrative access to the Aloha Workforce Solutions custom data model for development and architecture testing.</description>
     <label>Aloha Workforce Admin</label>
 
+    <!-- Employment fields -->
+
     <fieldPermissions>
         <editable>true</editable>
         <field>Employment__c.Employee_Number__c</field>
@@ -51,6 +53,52 @@
         <readable>true</readable>
     </fieldPermissions>
 
+    <!-- Work Location fields -->
+
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Work_Location__c.Active__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Work_Location__c.City__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Work_Location__c.Payroll_Location_Code__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Work_Location__c.Phone__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Work_Location__c.Postal_Code__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Work_Location__c.State__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Work_Location__c.Street__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+
+    <!-- Employment object -->
+
     <objectPermissions>
         <allowCreate>true</allowCreate>
         <allowDelete>true</allowDelete>
@@ -60,4 +108,17 @@
         <object>Employment__c</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
+
+    <!-- Work Location object -->
+
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>Work_Location__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+
 </PermissionSet>
