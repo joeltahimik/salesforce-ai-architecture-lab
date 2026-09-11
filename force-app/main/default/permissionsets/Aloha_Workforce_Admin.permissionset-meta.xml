@@ -97,6 +97,14 @@
         <readable>true</readable>
     </fieldPermissions>
 
+    <!-- Employment Location fields -->
+
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Employment_Location__c.End_Date__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+
     <!-- Employment object -->
 
     <objectPermissions>
@@ -118,6 +126,18 @@
         <allowRead>true</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>Work_Location__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+
+    <!-- Employment Location object -->
+
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>Employment_Location__c</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
 
