@@ -105,6 +105,20 @@
         <readable>true</readable>
     </fieldPermissions>
 
+    <!-- Contact Authorization fields -->
+
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Contact_Authorization__c.Expiration_Date__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Contact_Authorization__c.Active__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+
     <!-- Employment object -->
 
     <objectPermissions>
@@ -138,6 +152,18 @@
         <allowRead>true</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>Employment_Location__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+
+    <!-- Contact Authorization object -->
+
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>Contact_Authorization__c</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
 
