@@ -41,6 +41,16 @@
                 <label>Rejected</label>
             </value>
             <value>
+                <fullName>Cancellation Requested</fullName>
+                <default>false</default>
+                <label>Cancellation Requested</label>
+            </value>
+            <value>
+                <fullName>Awaiting Cancellation Completion</fullName>
+                <default>false</default>
+                <label>Awaiting Cancellation Completion</label>
+            </value>
+            <value>
                 <fullName>Cancelled</fullName>
                 <default>false</default>
                 <label>Cancelled</label>
