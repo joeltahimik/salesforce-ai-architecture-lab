@@ -244,7 +244,23 @@ without requiring separate fields for every possible status transition.
 > Explanation belongs in the relationship when the relationship itself changes meaning.**
 
 ---
+## Employment Change Lifecycle
 
+`Employment_Change_Request__c` represents the overall request.
+
+`Employment_Change_Item__c` represents one specific employment change within that request.
+
+```text
+Draft
+  ↓
+Submitted
+  ↓
+Awaiting Payroll Decision
+  ├── Rejected
+  └── Awaiting Implementation
+          ↓
+      Implemented
+      
 ## Architecture Mental Models
 
 ### Business story first

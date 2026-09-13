@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Payroll_Request_ID__c</fullName>
+    <caseSensitive>false</caseSensitive>
+    <description>Globally unique request identifier assigned by the external Payroll system for correlation with the overall employment change request.</description>
+    <externalId>true</externalId>
+    <label>Payroll Request ID</label>
+    <length>100</length>
+    <required>false</required>
+    <type>Text</type>
+    <unique>true</unique>
+</CustomField>

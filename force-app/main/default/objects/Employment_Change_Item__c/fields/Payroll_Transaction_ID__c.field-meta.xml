@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Payroll_Transaction_ID__c</fullName>
+    <caseSensitive>false</caseSensitive>
+    <description>Globally unique transaction identifier assigned by Payroll for this independently processed change item.</description>
+    <externalId>true</externalId>
+    <label>Payroll Transaction ID</label>
+    <length>100</length>
+    <required>false</required>
+    <type>Text</type>
+    <unique>true</unique>
+</CustomField>

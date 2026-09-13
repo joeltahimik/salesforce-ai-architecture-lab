@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>Represents a request to change one or more facts about an employment. Salesforce records the requested changes while Payroll remains authoritative for the final implemented outcome.</description>
+    <enableActivities>false</enableActivities>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <label>Employment Change Request</label>
+    <nameField>
+        <displayFormat>ECR-{000000}</displayFormat>
+        <label>Employment Change Request Number</label>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>Employment Change Requests</pluralLabel>
+    <sharingModel>Private</sharingModel>
+</CustomObject>

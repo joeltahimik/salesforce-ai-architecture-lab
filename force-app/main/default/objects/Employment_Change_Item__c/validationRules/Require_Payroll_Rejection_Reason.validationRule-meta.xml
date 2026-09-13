@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Require_Payroll_Rejection_Reason</fullName>
+    <active>true</active>
+    <description>Requires Payroll Rejection Reason when Payroll Decision is Rejected.</description>
+    <errorConditionFormula>
+        AND(
+            ISPICKVAL(Payroll_Decision__c, "Rejected"),
+            ISBLANK(Payroll_Rejection_Reason__c)
+        )
+    </errorConditionFormula>
+    <errorDisplayField>Payroll_Rejection_Reason__c</errorDisplayField>
+    <errorMessage>Enter the Payroll Rejection Reason when Payroll Decision is Rejected.</errorMessage>
+</ValidationRule>

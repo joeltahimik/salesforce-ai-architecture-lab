@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Employment_Change_Request__c</fullName>
+    <description>Parent employment change request containing this individual change item.</description>
+    <label>Employment Change Request</label>
+    <referenceTo>Employment_Change_Request__c</referenceTo>
+    <relationshipLabel>Employment Change Items</relationshipLabel>
+    <relationshipName>Employment_Change_Items</relationshipName>
+    <reparentableMasterDetail>false</reparentableMasterDetail>
+    <type>MasterDetail</type>
+    <writeRequiresMasterRead>false</writeRequiresMasterRead>
+</CustomField>

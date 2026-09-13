@@ -136,7 +136,49 @@
         <readable>true</readable>
     </fieldPermissions>
 
-    <!-- Employment object -->
+    <!-- Employment Change Request / Item fields -->
+
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Employment_Change_Item__c.Payroll_Rejection_Reason__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Employment_Change_Request__c.Payroll_Request_ID__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Employment_Change_Item__c.Payroll_Decision__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Employment_Change_Item__c.Implemented_Value__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Employment_Change_Item__c.Implemented_Effective_Date__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Employment_Change_Item__c.Cancellation_Reason__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Employment_Change_Item__c.Cancellation_Requested_Date__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Employment_Change_Item__c.Payroll_Transaction_ID__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
 
     <objectPermissions>
         <allowCreate>true</allowCreate>
@@ -210,4 +252,23 @@
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
 
+
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>Employment_Change_Request__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>Employment_Change_Item__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
 </PermissionSet>

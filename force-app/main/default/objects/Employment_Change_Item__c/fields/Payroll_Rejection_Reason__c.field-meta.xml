@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Payroll_Rejection_Reason__c</fullName>
+    <description>Reason provided by Payroll when an employment change item is rejected.</description>
+    <label>Payroll Rejection Reason</label>
+    <length>32768</length>
+    <type>LongTextArea</type>
+    <visibleLines>3</visibleLines>
+</CustomField>
