@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Status__c</fullName>
+    <description>Indicates the current determination of whether this employment is affected by the service request.</description>
+    <label>Status</label>
+    <required>true</required>
+    <trackHistory>true</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Suspected</fullName>
+                <default>true</default>
+                <label>Suspected</label>
+            </value>
+            <value>
+                <fullName>Confirmed Affected</fullName>
+                <default>false</default>
+                <label>Confirmed Affected</label>
+            </value>
+            <value>
+                <fullName>Not Affected</fullName>
+                <default>false</default>
+                <label>Not Affected</label>
+            </value>
+            <value>
+                <fullName>Resolved</fullName>
+                <default>false</default>
+                <label>Resolved</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

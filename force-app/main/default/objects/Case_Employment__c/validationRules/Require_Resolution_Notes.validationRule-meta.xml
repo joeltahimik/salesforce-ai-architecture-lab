@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Require_Resolution_Notes</fullName>
+    <active>true</active>
+    <description>Requires an explanation when an employment is determined not affected or resolved.</description>
+    <errorConditionFormula>AND(
+        OR(
+            ISPICKVAL(Status__c, "Not Affected"),
+            ISPICKVAL(Status__c, "Resolved")
+        ),
+        ISBLANK(Resolution_Notes__c)
+    )</errorConditionFormula>
+    <errorDisplayField>Resolution_Notes__c</errorDisplayField>
+    <errorMessage>Enter resolution notes explaining why this employment is not affected or how the issue was resolved.</errorMessage>
+</ValidationRule>

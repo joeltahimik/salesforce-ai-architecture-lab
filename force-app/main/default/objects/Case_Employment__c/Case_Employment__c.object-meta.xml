@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>Represents the involvement of an employment relationship in a service request, including its current investigation or resolution status.</description>
+    <enableActivities>false</enableActivities>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <label>Case Employment</label>
+    <nameField>
+        <displayFormat>CE-{000000}</displayFormat>
+        <label>Case Employment Number</label>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>Case Employments</pluralLabel>
+    <sharingModel>ControlledByParent</sharingModel>
+</CustomObject>
