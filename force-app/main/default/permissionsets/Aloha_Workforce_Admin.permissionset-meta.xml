@@ -176,6 +176,16 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Employment_Change_Item__c.Payroll_Cancellation_Acknowledged_Date__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Employment_Change_Item__c.Cancellation_Completed_Date__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Employment_Change_Item__c.Payroll_Transaction_ID__c</field>
         <readable>true</readable>
     </fieldPermissions>
