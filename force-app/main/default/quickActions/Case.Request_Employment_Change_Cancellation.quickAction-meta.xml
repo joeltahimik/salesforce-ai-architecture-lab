@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<QuickAction xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Launches the employment change cancellation flow from a Service Request to request cancellation or reversal of an associated employment change.</description>
+    <flowDefinition>Request_Employment_Change_Cancellation</flowDefinition>
+    <label>Request Employment Change Cancellation</label>
+    <optionsCreateFeedItem>false</optionsCreateFeedItem>
+    <type>Flow</type>
+</QuickAction>
