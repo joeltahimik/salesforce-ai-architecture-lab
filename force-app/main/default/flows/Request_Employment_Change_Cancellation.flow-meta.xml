@@ -78,7 +78,7 @@
         <connector>
             <targetReference>Eligible_Employment_Change_Items_Found</targetReference>
         </connector>
-        <filterLogic>1 AND 2 AND 3 AND 4</filterLogic>
+        <filterLogic>1 AND 2 AND 3 AND 4 AND 5</filterLogic>
         <filters>
             <field>Employment_Change_Request__c</field>
             <operator>EqualTo</operator>
@@ -105,6 +105,13 @@
             <operator>NotEqualTo</operator>
             <value>
                 <stringValue>Awaiting Cancellation Completion</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Item_Status__c</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>Rejected</stringValue>
             </value>
         </filters>
         <getFirstRecordOnly>false</getFirstRecordOnly>
