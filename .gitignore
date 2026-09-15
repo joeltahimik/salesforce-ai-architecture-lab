@@ -47,3 +47,6 @@ $RECYCLE.BIN/
 **/.venv/
 **/venv/
 aloha-auth.json
+
+# Temporary CLI and diagnostic output
+cli-output/
