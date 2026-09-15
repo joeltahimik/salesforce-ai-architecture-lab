@@ -1,149 +1,112 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
     <description>Provides administrative access to the Aloha Workforce Solutions custom data model for development and architecture testing.</description>
     <label>Aloha Workforce Admin</label>
-
-    <!-- Employment fields -->
-
     <fieldPermissions>
         <editable>true</editable>
         <field>Employment__c.Employee_Number__c</field>
         <readable>true</readable>
     </fieldPermissions>
-
     <fieldPermissions>
         <editable>true</editable>
         <field>Employment__c.Hire_Date__c</field>
         <readable>true</readable>
     </fieldPermissions>
-
     <fieldPermissions>
         <editable>true</editable>
         <field>Employment__c.Employment_Status__c</field>
         <readable>true</readable>
     </fieldPermissions>
-
     <fieldPermissions>
         <editable>true</editable>
         <field>Employment__c.Work_Email__c</field>
         <readable>true</readable>
     </fieldPermissions>
-
     <fieldPermissions>
         <editable>true</editable>
         <field>Employment__c.Benefits_Eligibility__c</field>
         <readable>true</readable>
     </fieldPermissions>
-
     <fieldPermissions>
         <editable>true</editable>
         <field>Employment__c.Job_Title__c</field>
         <readable>true</readable>
     </fieldPermissions>
-
     <fieldPermissions>
         <editable>true</editable>
         <field>Employment__c.Termination_Date__c</field>
         <readable>true</readable>
     </fieldPermissions>
-
     <fieldPermissions>
         <editable>true</editable>
         <field>Employment__c.Payroll_Employee_ID__c</field>
         <readable>true</readable>
     </fieldPermissions>
-
-    <!-- Work Location fields -->
-
     <fieldPermissions>
         <editable>true</editable>
         <field>Work_Location__c.Active__c</field>
         <readable>true</readable>
     </fieldPermissions>
-
     <fieldPermissions>
         <editable>true</editable>
         <field>Work_Location__c.City__c</field>
         <readable>true</readable>
     </fieldPermissions>
-
     <fieldPermissions>
         <editable>true</editable>
         <field>Work_Location__c.Payroll_Location_Code__c</field>
         <readable>true</readable>
     </fieldPermissions>
-
     <fieldPermissions>
         <editable>true</editable>
         <field>Work_Location__c.Phone__c</field>
         <readable>true</readable>
     </fieldPermissions>
-
     <fieldPermissions>
         <editable>true</editable>
         <field>Work_Location__c.Postal_Code__c</field>
         <readable>true</readable>
     </fieldPermissions>
-
     <fieldPermissions>
         <editable>true</editable>
         <field>Work_Location__c.State__c</field>
         <readable>true</readable>
     </fieldPermissions>
-
     <fieldPermissions>
         <editable>true</editable>
         <field>Work_Location__c.Street__c</field>
         <readable>true</readable>
     </fieldPermissions>
-
-    <!-- Employment Location fields -->
-
     <fieldPermissions>
         <editable>true</editable>
         <field>Employment_Location__c.End_Date__c</field>
         <readable>true</readable>
     </fieldPermissions>
-
-    <!-- Contact Authorization fields -->
-
     <fieldPermissions>
         <editable>true</editable>
         <field>Contact_Authorization__c.Expiration_Date__c</field>
         <readable>true</readable>
     </fieldPermissions>
-
     <fieldPermissions>
         <editable>false</editable>
         <field>Contact_Authorization__c.Active__c</field>
         <readable>true</readable>
     </fieldPermissions>
-
-
-    <!-- Case fields -->
-
     <fieldPermissions>
         <editable>true</editable>
         <field>Case.Work_Location__c</field>
         <readable>true</readable>
     </fieldPermissions>
-
-    <!-- Case Employment fields -->
-
     <fieldPermissions>
         <editable>true</editable>
         <field>Case_Employment__c.Resolution_Notes__c</field>
         <readable>true</readable>
     </fieldPermissions>
-
-    <!-- Employment Change Request / Item fields -->
-
     <fieldPermissions>
         <editable>true</editable>
         <field>Employment_Change_Item__c.Payroll_Rejection_Reason__c</field>
         <readable>true</readable>
     </fieldPermissions>
-
     <fieldPermissions>
         <editable>true</editable>
         <field>Employment_Change_Request__c.Payroll_Request_ID__c</field>
@@ -189,7 +152,16 @@
         <field>Employment_Change_Item__c.Payroll_Transaction_ID__c</field>
         <readable>true</readable>
     </fieldPermissions>
-
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Employment_Change_Item__c.Requested_Work_Location__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Employment_Change_Item__c.Implemented_Work_Location__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <objectPermissions>
         <allowCreate>true</allowCreate>
         <allowDelete>true</allowDelete>
@@ -199,9 +171,6 @@
         <object>Employment__c</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
-
-    <!-- Work Location object -->
-
     <objectPermissions>
         <allowCreate>true</allowCreate>
         <allowDelete>true</allowDelete>
@@ -211,9 +180,6 @@
         <object>Work_Location__c</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
-
-    <!-- Employment Location object -->
-
     <objectPermissions>
         <allowCreate>true</allowCreate>
         <allowDelete>true</allowDelete>
@@ -223,9 +189,6 @@
         <object>Employment_Location__c</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
-
-    <!-- Contact Authorization object -->
-
     <objectPermissions>
         <allowCreate>true</allowCreate>
         <allowDelete>true</allowDelete>
@@ -235,11 +198,6 @@
         <object>Contact_Authorization__c</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
-
-
-
-    <!-- Case object -->
-
     <objectPermissions>
         <allowCreate>false</allowCreate>
         <allowDelete>false</allowDelete>
@@ -249,9 +207,6 @@
         <object>Case</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
-
-    <!-- Case Employment object -->
-
     <objectPermissions>
         <allowCreate>true</allowCreate>
         <allowDelete>true</allowDelete>
@@ -261,8 +216,6 @@
         <object>Case_Employment__c</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
-
-
     <objectPermissions>
         <allowCreate>true</allowCreate>
         <allowDelete>true</allowDelete>

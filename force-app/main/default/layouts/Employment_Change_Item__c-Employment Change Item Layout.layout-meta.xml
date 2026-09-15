@@ -29,6 +29,10 @@
                 <field>Requested_Value__c</field>
             </layoutItems>
             <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Requested_Work_Location__c</field>
+            </layoutItems>
+            <layoutItems>
                 <behavior>Required</behavior>
                 <field>Requested_Effective_Date__c</field>
             </layoutItems>
@@ -67,6 +71,10 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Implemented_Value__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Implemented_Work_Location__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
