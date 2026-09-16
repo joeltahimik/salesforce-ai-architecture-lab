@@ -181,6 +181,30 @@
             <targetReference>Employment_Change_Details</targetReference>
         </connector>
     </assignments>
+    <assignments>
+        <description>Associates the current employment change item with the newly created Employment Change Request and adds it to the final submission collection.</description>
+        <name>Prepare_Submission_Change_Item</name>
+        <label>Prepare Submission Change Item</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>Loop_Submission_Change_Items.Employment_Change_Request__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Create_Employment_Change_Request.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Final_Change_Item_Collection</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>Loop_Submission_Change_Items</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Loop_Submission_Change_Items</targetReference>
+        </connector>
+    </assignments>
     <choices>
         <name>Add_Another_Change_Choice</name>
         <choiceText>Add Another Change</choiceText>
@@ -408,6 +432,21 @@
             <targetReference>Add_Working_Change_Item</targetReference>
         </noMoreValuesConnector>
     </loops>
+    <loops>
+        <description>Loops through the reviewed employment change items after the parent Employment Change Request has been created.</description>
+        <name>Loop_Submission_Change_Items</name>
+        <label>Loop Submission Change Items</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <collectionReference>Change_Item_Collection</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Prepare_Submission_Change_Item</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Create_Employment_Change_Items</targetReference>
+        </noMoreValuesConnector>
+    </loops>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -421,6 +460,40 @@
         </value>
     </processMetadataValues>
     <processType>Flow</processType>
+    <recordCreates>
+        <name>Create_Employment_Change_Request</name>
+        <label>Create Employment Change Request</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <inputAssignments>
+            <field>Case__c</field>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Employment__c</field>
+            <value>
+                <elementReference>Selected_Employment_Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Employment_Change_Request__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+        <connector>
+            <targetReference>Loop_Submission_Change_Items</targetReference>
+        </connector>
+    </recordCreates>
+    <recordCreates>
+        <description>Creates all submitted Employment Change Items in one bulk operation after each item has been associated with the newly created Employment Change Request.</description>
+        <name>Create_Employment_Change_Items</name>
+        <label>Create Employment Change Items</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <inputReference>Final_Change_Item_Collection</inputReference>
+        <connector>
+            <targetReference>Employment_Change_Request_Submitted</targetReference>
+        </connector>
+    </recordCreates>
     <recordLookups>
         <description>Retrieves Case Employment junction records associated with the current Service Request to identify affected Employments.</description>
         <name>Get_Affected_Employments</name>
@@ -473,7 +546,7 @@
         <locationY>0</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Employment_Change_Details</targetReference>
+            <targetReference>Get_Selected_Employer</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -485,6 +558,28 @@
         </filters>
         <getFirstRecordOnly>true</getFirstRecordOnly>
         <object>Contact</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Retrieves the Account associated with the selected Employment for display and downstream processing.</description>
+        <name>Get_Selected_Employer</name>
+        <label>Get Selected Employer</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Employment_Change_Details</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Get_Selected_Employment.Employer__c</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Account</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
@@ -591,7 +686,7 @@
         </connector>
         <fields>
             <name>Employment_Context</name>
-            <fieldText>&lt;p&gt;&lt;strong&gt;Employment&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Employee: {!Get_Selected_Employee.Name}&lt;br/&gt;Employer: {!Get_Selected_Employment.Employer__r.Name}&lt;br/&gt;Employee Number: {!Get_Selected_Employment.Employee_Number__c}&lt;br/&gt;Employment Status: {!Get_Selected_Employment.Employment_Status__c}&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;strong&gt;Employment&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Employee: {!Get_Selected_Employee.Name}&lt;br/&gt;Employer: {!Get_Selected_Employer.Name}&lt;br/&gt;Employee Number: {!Get_Selected_Employment.Employee_Number__c}&lt;br/&gt;Employment Status: {!Get_Selected_Employment.Employment_Status__c}&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
             <styleProperties>
                 <verticalAlignment>
@@ -691,9 +786,12 @@
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Create_Employment_Change_Request</targetReference>
+        </connector>
         <fields>
-            <name>Review_Placeholder_Message</name>
-            <fieldText>&lt;p&gt;&lt;strong&gt;Change package ready for review.&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;The detailed review experience will be added next. No Salesforce records have been created yet.&lt;/p&gt;</fieldText>
+            <name>Review_Changes_Context</name>
+            <fieldText>&lt;p&gt;&lt;strong&gt;Review Employment Changes&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Employee: &lt;/strong&gt;{!Get_Selected_Employee.Name}&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Employer: &lt;/strong&gt;{!Get_Selected_Employer.Name}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Review the requested changes below before submitting the request.&lt;/strong&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
             <styleProperties>
                 <verticalAlignment>
@@ -704,6 +802,83 @@
                 </width>
             </styleProperties>
         </fields>
+        <fields>
+            <name>Review_Changes_Table</name>
+            <dataTypeMappings>
+                <typeName>T</typeName>
+                <typeValue>Employment_Change_Item__c</typeValue>
+            </dataTypeMappings>
+            <extensionName>flowruntime:datatable</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>label</name>
+                <value>
+                    <stringValue>Requested Changes</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>selectionMode</name>
+                <value>
+                    <stringValue>NO_SELECTION</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>minRowSelection</name>
+                <value>
+                    <numberValue>0.0</numberValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>tableData</name>
+                <value>
+                    <elementReference>Change_Item_Collection</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>keyField</name>
+                <value>
+                    <complexValue>{"dataType":"SObject","objectType":"Employment_Change_Item__c","fieldReferences":["Id"],"elementReference":"Change_Item_Collection"}</complexValue>
+                    <complexValueType>ComplexObjectFieldDetails</complexValueType>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>maxRowSelection</name>
+                <value>
+                    <numberValue>0.0</numberValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>columns</name>
+                <value>
+                    <stringValue>[{"apiName":"Change_Type__c","guid":"column-251c","editable":false,"hasCustomHeaderLabel":false,"customHeaderLabel":"","wrapText":true,"order":0,"sortable":false,"label":"Change Type","type":"text"},{"apiName":"Requested_Value__c","guid":"column-1e25","editable":false,"hasCustomHeaderLabel":false,"customHeaderLabel":"","wrapText":true,"order":1,"sortable":false,"label":"Requested Value","type":"text"},{"apiName":"Requested_Effective_Date__c","guid":"column-dd31","editable":false,"hasCustomHeaderLabel":false,"customHeaderLabel":"","wrapText":true,"order":2,"sortable":false,"label":"Requested Effective Date","type":"date-local"}]</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>columnReferences</name>
+                <value>
+                    <complexValue>{"dataType":"SObject","objectType":"Employment_Change_Item__c","fieldReferences":["Change_Type__c","Requested_Value__c","Requested_Effective_Date__c"],"elementReference":"Change_Item_Collection"}</complexValue>
+                    <complexValueType>ComplexObjectFieldDetails</complexValueType>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>shouldDisplayLabel</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
+        </fields>
+        <nextOrFinishButtonLabel>Submit</nextOrFinishButtonLabel>
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
     </screens>
@@ -826,6 +1001,19 @@
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
     </screens>
+    <screens>
+        <name>Employment_Change_Request_Submitted</name>
+        <label>Request Submitted</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <fields>
+            <name>Submission_Confirmation</name>
+            <fieldText>&lt;p&gt;&lt;strong&gt;Employment Change Request Submitted&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;The employment change request for &lt;strong&gt;{!Get_Selected_Employee.Name}&lt;/strong&gt; has been submitted successfully.&lt;/p&gt;&lt;p&gt;The requested changes have been sent for processing.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
     <start>
         <locationX>0</locationX>
         <locationY>0</locationY>
@@ -895,5 +1083,13 @@
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>Final_Change_Item_Collection</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Employment_Change_Item__c</objectType>
     </variables>
 </Flow>
