@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Payroll_Decision_By__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>Salesforce user who recorded Payroll's authoritative decision for this employment change item.</description>
+    <label>Payroll Decision By</label>
+    <referenceTo>User</referenceTo>
+    <relationshipLabel>Payroll Decisions</relationshipLabel>
+    <relationshipName>Payroll_Decisions</relationshipName>
+    <required>false</required>
+    <trackHistory>true</trackHistory>
+    <type>Lookup</type>
+</CustomField>

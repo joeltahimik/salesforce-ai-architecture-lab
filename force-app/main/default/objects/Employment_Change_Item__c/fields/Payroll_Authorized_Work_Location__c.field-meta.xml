@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Payroll_Authorized_Work_Location__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>Work Location Payroll authorized for this employment change item. Used when Change Type is Work Location and may differ from the requested location.</description>
+    <inlineHelpText>Select the Work Location authorized by Payroll for this employment change.</inlineHelpText>
+    <label>Payroll Authorized Work Location</label>
+    <referenceTo>Work_Location__c</referenceTo>
+    <relationshipLabel>Payroll Authorized Employment Changes</relationshipLabel>
+    <relationshipName>Payroll_Authorized_Employment_Changes</relationshipName>
+    <required>false</required>
+    <type>Lookup</type>
+</CustomField>

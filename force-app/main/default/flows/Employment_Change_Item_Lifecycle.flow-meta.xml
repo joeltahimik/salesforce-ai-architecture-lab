@@ -250,7 +250,7 @@
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>$Record.Payroll_Transaction_ID__c</leftValueReference>
+                <leftValueReference>$Record.Payroll_Acknowledged_Date__c</leftValueReference>
                 <operator>IsNull</operator>
                 <rightValue>
                     <booleanValue>false</booleanValue>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<QuickAction xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Launches the Payroll processing flow for an individual Employment Change Item to review and record Payroll's authoritative decision.</description>
+    <flowDefinition>Process_Employment_Change</flowDefinition>
+    <label>Process Employment Change</label>
+    <optionsCreateFeedItem>false</optionsCreateFeedItem>
+    <type>Flow</type>
+</QuickAction>
