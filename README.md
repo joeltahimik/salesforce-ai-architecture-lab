@@ -154,6 +154,18 @@ Cancellation processing distinguishes between requesting cancellation, Payroll a
 
 The parent Employment Change Request aggregates the state of its child items and derives its processing status and outcome.
 
+### Payroll Processing Architecture
+
+Post-submission processing separates three distinct business facts:
+
+**Requested -> Payroll Authorized -> Implemented**
+
+The original request is preserved, Payroll records an authoritative decision for each Employment Change Item, and final implementation is tracked separately.
+
+Payroll can **Approve**, **Modify**, or **Reject** an individual change. This allows one Employment Change Request to contain multiple items with independent outcomes while preserving the original requested values.
+
+Detailed design decisions, lifecycle rules, Flow architecture, acceptance-test evidence, and engineering practices are documented in [Employment Change Processing Architecture](docs/employment-change-processing.md).
+
 ## Implemented Features
 
 The CRM foundation currently includes:
@@ -172,9 +184,17 @@ The CRM foundation currently includes:
 - Bulk Employment Change Item creation
 - Employment Change Item lifecycle automation
 - Employment Change Request status/outcome aggregation
+- Payroll acknowledgment tracking
+- Per-item Payroll decision processing with Approved, Modified, and Rejected outcomes
+- Requested-versus-Payroll-authorized value preservation
+- Payroll decision actor and timestamp auditing
+- Structured Payroll-authorized Work Location handling
+- Flow-level Payroll processing eligibility enforcement
 - Employment-change cancellation workflow
+- Dynamic Forms and Dynamic Actions for contextual processing experiences
 - Lightning record-page and page-layout customization
 - Permission-set-based access to custom functionality
+- Repository-level structural Flow analysis
 
 ## Architecture Principles
 
@@ -268,4 +288,6 @@ Temporary CLI and diagnostic output is also excluded from the repository.
 
 The **Request Employment Change v1** workflow has completed end-to-end acceptance testing, including a multi-item request containing both a standard field change and a structured Work Location change.
 
-Development continues with the post-submission employment-change processing lifecycle.
+Post-submission **Payroll decision processing** has also completed acceptance testing across Approved, Modified, Rejected, and ineligible-record paths.
+
+The current architecture boundary ends at **Payroll Authorized**. The next processing capability is **Record Implementation**, which will capture what was actually implemented and correlate the completed change with the external Payroll transaction.

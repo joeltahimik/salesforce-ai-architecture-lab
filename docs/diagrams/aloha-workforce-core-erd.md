@@ -244,23 +244,63 @@ without requiring separate fields for every possible status transition.
 > Explanation belongs in the relationship when the relationship itself changes meaning.**
 
 ---
-## Employment Change Lifecycle
+## Employment Change Processing
 
-`Employment_Change_Request__c` represents the overall request.
+A Service Request can have at most one `Employment_Change_Request__c`.
 
-`Employment_Change_Item__c` represents one specific employment change within that request.
+The Employment Change Request represents the overall change package for an
+affected Employment. Each `Employment_Change_Item__c` represents one atomic
+change within that package.
 
 ```text
-Draft
-  ↓
-Submitted
-  ↓
-Awaiting Payroll Decision
-  ├── Rejected
-  └── Awaiting Implementation
-          ↓
-      Implemented
-      
+Case (Service Request)
+        |
+        | 0..1
+        v
+Employment Change Request
+        |
+        | 1..*
+        v
+Employment Change Item
+```
+
+This allows one business transaction to contain multiple independently
+processable changes.
+
+For example:
+
+```text
+Employment Change Request
+    |
+    +-- Job Title
+    +-- Department
+    +-- Work Location
+```
+
+The Employment Change Item is the atomic Payroll decision unit. Individual
+items in the same request can therefore be Approved, Modified, or Rejected
+independently.
+
+The processing architecture preserves three distinct stages:
+
+```text
+Requested
+    |
+    v
+Payroll Authorized
+    |
+    v
+Implemented
+```
+
+The parent Employment Change Request aggregates the processing state and
+outcome of its child items.
+
+Detailed lifecycle, Payroll processing, cancellation, Flow design, and
+acceptance-test evidence are documented in
+[Employment Change Processing Architecture](../employment-change-processing.md).
+
+---
 ## Architecture Mental Models
 
 ### Business story first
