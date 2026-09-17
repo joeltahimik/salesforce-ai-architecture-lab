@@ -26,6 +26,16 @@
                                 </criteria>
                             </visibilityRule>
                         </valueListItems>
+                        <valueListItems>
+                            <value>Employment_Change_Item__c.Record_Implementation</value>
+                            <visibilityRule>
+                                <criteria>
+                                    <leftValue>{!Record.Item_Status__c}</leftValue>
+                                    <operator>EQUAL</operator>
+                                    <rightValue>Awaiting Implementation</rightValue>
+                                </criteria>
+                            </visibilityRule>
+                        </valueListItems>
                     </valueList>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
