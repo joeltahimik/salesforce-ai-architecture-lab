@@ -290,4 +290,6 @@ The **Request Employment Change v1** workflow has completed end-to-end acceptanc
 
 Post-submission **Payroll decision processing** has also completed acceptance testing across Approved, Modified, Rejected, and ineligible-record paths.
 
-The current architecture boundary ends at **Payroll Authorized**. The next processing capability is **Record Implementation**, which will capture what was actually implemented and correlate the completed change with the external Payroll transaction.
+**Record Implementation** has completed acceptance testing for both generic field changes and structured Work Location changes. Implementation is recorded independently from Payroll authorization and requires the actual implemented value, implemented effective date, and external Payroll transaction identifier. Structured Work Location changes additionally preserve the implemented Work Location relationship.
+
+The employment-change processing architecture now supports the complete auditable progression from **Requested → Payroll Authorized → Implemented**.

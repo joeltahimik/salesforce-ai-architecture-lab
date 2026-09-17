@@ -109,6 +109,18 @@ Implementation represents what was actually applied. Implementation fields inclu
 
 The implementation stage is intentionally separate from authorization. An approved change is not assumed to have been implemented merely because Payroll authorized it.
 
+> **Authorization describes what should happen. Implementation records what did happen.**
+
+Implementation values are therefore entered independently rather than automatically copied from Payroll-authorized values. Even when the authorized and implemented values are identical, they represent different business facts and remain separately auditable.
+
+For an item to reach the Implemented lifecycle state, the generic implementation evidence requires:
+
+- `Implemented_Value__c`
+- `Implemented_Effective_Date__c`
+- `Payroll_Transaction_ID__c`
+
+For Work Location changes, the guided implementation Flow additionally requires `Implemented_Work_Location__c` so the authoritative relationship is preserved alongside the human-readable implemented value.
+
 ---
 
 ## Payroll Acknowledgment
@@ -301,7 +313,7 @@ Examples include:
 
 The `Process Employment Change` Dynamic Action is visible only while the item is Submitted or Awaiting Payroll Decision.
 
-A future `Record Implementation` action is intended for the Awaiting Implementation state.
+The `Record Implementation` Dynamic Action is visible only while the item is Awaiting Implementation. After implementation is recorded and lifecycle automation derives the Implemented state, the action disappears and the Implementation section becomes visible.
 
 > **Show the action while work is required. Show the resulting information after the work is completed.**
 
@@ -339,7 +351,7 @@ The Payroll decision architecture was acceptance-tested against the primary deci
 
 ### Approved Path
 
-ECI-000003 represented a Job Title change. The test demonstrated Payroll acknowledgment, an Approved decision, decision actor and timestamp, requested values copied to Payroll-authorized values, and transition to Awaiting Implementation.
+ECI-000003 represented a Job Title change. The test demonstrated Payroll acknowledgment, an Approved decision, decision actor and timestamp, Payroll-authorized values recorded to match the requested values, and transition to Awaiting Implementation.
 
 ### Rejected Path
 
@@ -364,6 +376,50 @@ Effective Date: November 15, 2026
 ```
 
 The test demonstrated that the original request remained intact while Payroll's modified authoritative values were stored independently. The item transitioned to Awaiting Implementation.
+
+### Record Implementation: Generic Job Title Path
+
+ECI-000003 was subsequently used to acceptance-test the generic Record Implementation path after its Approved Payroll decision.
+
+The implementation was entered independently as:
+
+- Implemented Value: Senior Guest Services Manager
+- Implemented Effective Date: October 1, 2026
+- Payroll Transaction ID: `TEST-PAY-ECI000003-001`
+
+The Flow recorded the implementation evidence without assigning the final status directly. Lifecycle automation derived the item status as Implemented after the required implementation facts were present.
+
+The record-page experience also transitioned correctly: the `Record Implementation` action disappeared after completion and the Implementation section became visible.
+
+### Record Implementation: Structured Work Location Path
+
+ECI-000005 was subsequently used to acceptance-test the structured Work Location implementation path.
+
+The complete audit chain was:
+
+```text
+Requested
+Work Location: Ala Moana
+Effective Date: November 1, 2026
+
+Payroll Authorized
+Work Location: Waikiki
+Effective Date: November 15, 2026
+
+Implemented
+Work Location: Waikiki
+Effective Date: November 15, 2026
+Payroll Transaction ID: TEST-PAY-ECI000005-001
+```
+
+The implemented Work Location was explicitly selected during implementation rather than copied automatically from the Payroll-authorized Work Location. The Flow preserved both the implemented display value and the structured `Implemented_Work_Location__c` relationship.
+
+Lifecycle automation then derived the final Implemented state.
+
+These two tests demonstrate both implementation branches:
+
+- generic value implementation for Job Title,
+- structured relationship implementation for Work Location.
 
 ### Negative Eligibility Test
 
@@ -432,7 +488,7 @@ This practice keeps source control focused on deliberate architecture rather tha
 
 ## Current Architecture Boundary
 
-At this milestone:
+At this milestone, the core employment-change processing lifecycle is implemented and acceptance-tested through implementation:
 
 ```text
 Requested                 COMPLETE
@@ -443,18 +499,28 @@ Payroll Decision          COMPLETE
     |
 Payroll Authorized        COMPLETE
     |
-Record Implementation     NEXT
+Record Implementation     COMPLETE
     |
-Implemented
+Implemented               COMPLETE
 ```
 
-The next processing capability is **Record Implementation**.
+The architecture now preserves three distinct layers of business evidence:
 
-That capability is intended to capture:
+```text
+REQUESTED
+What the requester asked for
+        |
+        v
+PAYROLL AUTHORIZED
+What Payroll approved or modified
+        |
+        v
+IMPLEMENTED
+What Payroll actually applied
+```
 
-- implemented value,
-- implemented effective date,
-- implemented Work Location when applicable,
-- and the Payroll transaction identifier.
+Record Implementation captures the actual implemented value, implemented effective date, implemented Work Location when applicable, and the external Payroll transaction identifier.
 
-Once implementation facts are recorded, lifecycle automation can derive the final Implemented state.
+Lifecycle automation derives the final Implemented state only after the required implementation evidence is present.
+
+> **Authorization describes what should happen. Implementation records what did happen.**
