@@ -192,6 +192,11 @@
         <field>Employment_Change_Item__c.Payroll_Acknowledged_Date__c</field>
         <readable>true</readable>
     </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Employment_Change_Request__c.Payroll_Submitted_Date__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <objectPermissions>
         <allowCreate>true</allowCreate>
         <allowDelete>true</allowDelete>

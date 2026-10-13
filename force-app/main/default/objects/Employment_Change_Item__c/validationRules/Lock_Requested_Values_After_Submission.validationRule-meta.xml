@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Lock_Requested_Values_After_Submission</fullName>
+    <active>true</active>
+    <description>Prevents modification of the original requested change facts after an Employment Change Item leaves Draft status.</description>
+    <errorConditionFormula>AND(
+        NOT(ISNEW()),
+        NOT(ISPICKVAL(Item_Status__c, "Draft")),
+        OR(
+            ISCHANGED(Change_Type__c),
+            ISCHANGED(Requested_Value__c),
+            ISCHANGED(Requested_Effective_Date__c),
+            ISCHANGED(Requested_Work_Location__c)
+        )
+    )</errorConditionFormula>
+    <errorMessage>Requested change details cannot be modified after the Employment Change Item has been submitted.</errorMessage>
+</ValidationRule>

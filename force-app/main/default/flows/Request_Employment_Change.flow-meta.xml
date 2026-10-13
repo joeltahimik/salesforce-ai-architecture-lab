@@ -477,6 +477,12 @@
                 <elementReference>Selected_Employment_Id</elementReference>
             </value>
         </inputAssignments>
+        <inputAssignments>
+            <field>Payroll_Submitted_Date__c</field>
+            <value>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+            </value>
+        </inputAssignments>
         <object>Employment_Change_Request__c</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
         <connector>
