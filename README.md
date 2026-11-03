@@ -6,6 +6,20 @@ The project uses a fictional organization, **Aloha Workforce Solutions**, to exp
 
 > **Current phase:** Salesforce CRM foundation and employment-change operations.
 
+## Architecture & Learning Resources
+
+These documents explain the architecture, preserve design decisions,
+and provide a reliable starting point when returning to the project.
+
+| Resource | Purpose |
+| --- | --- |
+| [Architecture Refresher](docs/architecture-refresher.md) | Business context, data model, processing lifecycle, security design, and knowledge checks |
+| [Development Checkpoint](docs/development-checkpoint.md) | Current sprint, completed tests, outstanding issues, and exact next steps |
+| [Employment Change Processing](docs/employment-change-processing.md) | Detailed Payroll decision and implementation architecture |
+
+**Returning after a break?** Start with the Architecture Refresher,
+then read the Development Checkpoint.
+
 ## Project Goals
 
 This lab is designed to demonstrate more than individual Salesforce features. It focuses on architectural decisions, data relationships, automation boundaries, security, maintainability, and the reasoning behind implementation choices.
