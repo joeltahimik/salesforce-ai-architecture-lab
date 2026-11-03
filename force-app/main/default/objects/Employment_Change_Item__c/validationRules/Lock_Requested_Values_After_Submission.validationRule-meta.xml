@@ -5,7 +5,10 @@
     <description>Prevents modification of the original requested change facts after an Employment Change Item leaves Draft status.</description>
     <errorConditionFormula>AND(
         NOT(ISNEW()),
-        NOT(ISPICKVAL(Item_Status__c, "Draft")),
+        OR(
+            NOT(ISPICKVAL(PRIORVALUE(Item_Status__c), "Draft")),
+            NOT(ISPICKVAL(Item_Status__c, "Draft"))
+        ),
         OR(
             ISCHANGED(Change_Type__c),
             ISCHANGED(Requested_Value__c),

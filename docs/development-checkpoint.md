@@ -8,7 +8,7 @@
 
 **Active sprint:** Payroll Processor Persona and Least-Privilege Security
 
-**Last confirmed Git checkpoint:** `5c323cd`
+**Last confirmed Git checkpoint:** `92e2313`
 
 **Commit message:**
 WIP: Build payroll persona security and request integrity controls
@@ -51,27 +51,44 @@ Reconfirm its current state when resuming after a long absence.
    the new validation rule.
 8. After deployment, Salesforce rejected the same type of edit.
 
-## Outstanding Test Data Issue
+## Request Integrity Security Hardening | 2026-11-03
 
-**Record:** ECI-000002
+**Validation rule:** `Lock_Requested_Values_After_Submission`
 
-**Current test value last observed:**
-`SECURITY TEST - SHOULD NOT SAVE`
+**Improvement:** Added `PRIORVALUE(Item_Status__c)` to prevent
+simultaneous Draft-reset and requested-value modification.
 
-**Original intended value:** `People Operations`
+**Deployment:** Successfully deployed to `aloha-dev`.
 
-The active validation rule prevents ordinary updates to submitted
-request facts, including restoring the original value.
+**Metadata backup:**
+`documentation/metadata-backups/20261103-192543-request-lock-rule.xml`
 
-**Next action:** Inspect the record and active rule, design a
-temporary controlled administrative correction, restore the value,
-and verify the validation rule remains active.
+**Dedicated test records:**
+- Case: `500ak00003miwSvAAI`
+- ECR-000003: `a06ak00000hUVTrAAO`
+- ECI-000006: `a05ak00000mtRDeAAM`
 
-Do not introduce a permanent unrestricted bypass merely for cleanup.
+**Verified tests:**
+1. Draft Requested Value edit succeeded.
+2. Submitted Requested Value modification was blocked.
+3. Simultaneous status reset to Draft and Requested Value modification was blocked.
+4. Read-only SOQL confirmed the rejected transaction preserved both fields.
+
+**Final verified ECI-000006 state:**
+- Item Status: Submitted
+- Requested Value: Security Test Department B
+
+**Earlier test-data correction:**
+ECI-000002 Requested Value was restored to `People Operations`.
+A subsequent unauthorized update failed, and read-only verification
+confirmed the original value remained unchanged.
+
+**Security scope:** Requested-value immutability is verified.
+Unauthorized status-only transitions and full Payroll Processor
+runtime permissions require separate testing.
 
 ## Remaining Security Work
 
-- Restore ECI-000002 test data.
 - Regression-test legitimate request and lifecycle automation.
 - Test permitted Payroll decisions and implementation actions.
 - Investigate direct editing of process-controlled lifecycle fields.
