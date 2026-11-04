@@ -42,19 +42,83 @@ Features listed above are part of the roadmap unless identified as implemented b
 
 ## Aloha Workforce Solutions
 
-Aloha Workforce Solutions is the fictional business environment used throughout the lab.
+### Business Overview
 
-The current application, **Aloha Workforce Operations**, provides a centralized Salesforce workspace for managing:
+**Aloha Workforce Solutions** is a fictional company providing outsourced
+Human Resources and Payroll services to multiple employer clients.
 
-- Service Requests
-- Employments
-- Employment Change Requests
-- Employment Change Items
-- Work Locations
-- Accounts and Contacts
-- Operational reporting
+Employers regularly submit requests involving employee information and
+employment changes, including:
 
-The standard Salesforce `Case` object is presented to business users as **Service Request** while retaining the standard Case data model and platform behavior.
+- Updating an employee's job title or department.
+- Transferring an employee to another work location.
+- Changing an employee's employment classification.
+- Cancelling a previously submitted employment change.
+
+These requests require coordination between employer representatives,
+service teams, and Payroll personnel. Each change must be tracked,
+evaluated, authorized, and confirmed as implemented while preserving
+an accurate history of the original request.
+
+### Salesforce Solution
+
+**Aloha Workforce Operations** is the custom Salesforce application
+developed to support these business processes.
+
+The application uses Salesforce to:
+
+- **Capture** employer requests through Service Requests (Cases).
+- **Organize** multiple employment changes into a single request package.
+- **Coordinate** Payroll decisions, modifications, rejections, and cancellations.
+- **Track** individual changes through their processing lifecycles.
+- **Record** what was requested, authorized, and implemented.
+- **Preserve** traceability, access controls, and auditable business history.
+
+The application currently manages Service Requests, Employments,
+Employment Change Requests, Employment Change Items, Work Locations,
+Accounts, Contacts, and supporting operational processes.
+
+The standard Salesforce `Case` object is presented to business users
+as **Service Request**, retaining the standard Case data model and
+platform capabilities.
+
+### Architectural Approach
+
+**Salesforce coordinates and audits the workflow. Payroll remains
+the authoritative system for Payroll processing.**
+
+Rather than recreating a Payroll engine inside Salesforce, the
+application focuses on workflow orchestration, business process
+automation, access control, and operational visibility.
+
+The solution separates three important business events:
+
+**Requested → Payroll Authorized → Implemented**
+
+- **Requested:** What the employer originally submitted.
+- **Payroll Authorized:** What Payroll approved or modified.
+- **Implemented:** What Payroll confirmed was actually processed.
+
+These events are recorded separately so that authorization is never
+mistaken for completed implementation.
+
+This separation supports data integrity, accountability, and future
+integration with external Payroll systems.
+
+### Portfolio Context
+
+Aloha Workforce Solutions is the primary fictional business scenario
+for the **Salesforce AI Architecture Lab**.
+
+The current phase focuses on a secure, maintainable Salesforce CRM
+foundation using custom data models, Flow automation, lifecycle
+management, and access controls.
+
+Future phases will explore enterprise integrations, Salesforce Data 360,
+Agentforce, retrieval-augmented generation (RAG), and AI-assisted
+operational workflows.
+
+**This is a technical portfolio project, not a production Payroll system.**
 
 ## Current CRM Architecture
 
@@ -69,6 +133,17 @@ The employment-change architecture separates the business transaction from the i
             | 1..*
             v
     Employment Change Item
+
+**Relationship cardinality:** A Service Request may have zero or one
+Employment Change Request (`0..1`). Each Employment Change Request is
+designed to contain one or more Employment Change Items (`1..*`).
+
+This structure allows individual employment changes to be processed
+independently while remaining part of the same business transaction.
+
+The minimum of one change item is a business requirement, not a
+constraint automatically enforced by the Salesforce master-detail
+relationship.
 
 An affected Employment is associated with the Service Request through `Case_Employment__c`.
 
@@ -209,6 +284,27 @@ The CRM foundation currently includes:
 - Lightning record-page and page-layout customization
 - Permission-set-based access to custom functionality
 - Repository-level structural Flow analysis
+
+## Security and Data Integrity
+
+The application uses layered security controls to protect employment-change
+requests and preserve the integrity of Payroll processing.
+
+- **Permission sets:** Define access to Payroll processing functionality.
+- **Record-level sharing:** Controls visibility of Employment Change Requests
+  and their related items.
+- **Validation rules:** Protect submitted requested values from unauthorized
+  modification.
+- **Lifecycle automation:** Derives processing statuses from recorded business
+  events where appropriate.
+- **Security testing:** Verifies permitted operations and attempted rule bypasses.
+
+The `Lock_Requested_Values_After_Submission` validation rule has been tested
+against a simultaneous Draft-status reset and requested-value modification.
+Salesforce rejected the attempted update and preserved the original values.
+
+**Current limitation:** Additional testing is planned for unauthorized
+status-only transitions and Payroll Processor runtime permissions.
 
 ## Architecture Principles
 
