@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Require_Implementation_Evidence</fullName>
+    <active>true</active>
+    <description>Prevents an Employment Change Item from being marked Implemented without required Payroll decision and implementation evidence.</description>
+    <errorConditionFormula>AND(
+    ISPICKVAL(Item_Status__c, "Implemented"),
+    OR(
+        NOT(
+            OR(
+                ISPICKVAL(Payroll_Decision__c, "Approved"),
+                ISPICKVAL(Payroll_Decision__c, "Modified")
+            )
+        ),
+        ISBLANK(Implemented_Value__c),
+        ISBLANK(Implemented_Effective_Date__c),
+        ISBLANK(Payroll_Transaction_ID__c),
+        AND(
+            ISPICKVAL(Change_Type__c, "Work Location"),
+            ISBLANK(Implemented_Work_Location__c)
+        )
+    )
+)</errorConditionFormula>
+    <errorMessage>Cannot mark this item Implemented without an Approved or Modified Payroll decision and complete implementation evidence.</errorMessage>
+</ValidationRule>

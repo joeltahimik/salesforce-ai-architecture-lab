@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<QuickAction xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Launches the guided employment change request flow from a Service Request to submit one or more employment changes for Payroll processing.</description>
+    <flowDefinition>Request_Employment_Change</flowDefinition>
+    <label>Request Employment Change</label>
+    <optionsCreateFeedItem>false</optionsCreateFeedItem>
+    <type>Flow</type>
+</QuickAction>
