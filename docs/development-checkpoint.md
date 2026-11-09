@@ -133,3 +133,72 @@ At the end of each development session, update:
 **Reminder:** GitHub commits preserve source code. Salesforce org
 data, group membership, authentication, and runtime configuration
 may require separate verification or documentation.
+
+---
+
+## Agentforce Development Checkpoint | 2026-11-08
+
+**Current focus:** Aloha Workforce AI Assistant configuration.
+
+**Salesforce org:** `aloha-dev`
+
+### Completed
+
+- Created Aloha Workforce AI Assistant, Version 1 (Draft).
+- Established dedicated Einstein Agent User.
+- Created and deployed `Aloha_Workforce_AI_Read_Only`.
+- Assigned the permission set to the Agentforce execution user.
+- Verified read-only ECR and ECI object permissions.
+- Verified 14 read-only ECI field permissions.
+- Investigated Payroll Processor public-group membership and sharing.
+- Verified Agentforce and Payroll Processor record-access differences.
+- Documented findings in:
+  `docs/agentforce/agentforce-security-baseline.md`
+
+### Agentforce Configuration
+
+Existing Agentforce Builder components:
+
+- Agent Router
+- Ambiguous Question
+- Escalation
+- Off Topic
+
+Employment Change Inquiry remains to be completed.
+
+Planned read-only retrieval actions:
+
+- `GetEmploymentChangeRequest`
+- `GetEmploymentChangeItems`
+
+These actions are not yet operational.
+
+### Security Status
+
+The permission set has been deployed and its configuration verified.
+
+Runtime authorization remains unresolved.
+
+Do not activate the assistant until retrieval actions and
+requesting-user authorization have been implemented and tested.
+
+### Next Development Steps
+
+1. Return to Agent Optimizer.
+2. Complete Employment Change Inquiry subagent.
+3. Review the generated Agent Script.
+4. Design and implement secure read-only retrieval actions.
+5. Test authorized and unauthorized access.
+6. Complete Agentforce functional regression tests.
+
+### Documentation First
+
+Before repeating Salesforce discovery queries, consult:
+
+- `docs/architecture-refresher.md`
+- `docs/development-checkpoint.md`
+- `docs/agentforce/agentforce-security-baseline.md`
+- `docs/testing/employment-change-lifecycle-regression.md`
+
+Requery Salesforce only when information is missing, has changed,
+or requires live verification.
