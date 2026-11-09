@@ -255,3 +255,108 @@ All five observed conversational tests passed.
 - docs/architecture-refresher.md
 - docs/testing/employment-change-lifecycle-regression.md
 
+---
+
+## Agentforce Employee Agent Migration
+
+The existing Aloha Workforce AI Assistant V1 was confirmed in Salesforce Setup
+as an active Service Agent. This supersedes its Draft status in the historical
+checkpoint above. The migration uses a separate Employee Agent API name,
+`Aloha_Workforce_AI_Assistant_Employee`. The source review and validation did
+not change the active Service Agent.
+
+### Bundle Review
+
+- The draft `AiAuthoringBundle` contains an `AgentforceEmployeeAgent` script
+  and its bundle descriptor. The descriptor has no committed version target.
+- The router retains Employment Change Inquiry, Off Topic, Ambiguous Question,
+  and Escalation. The only actions are internal subagent transitions.
+- The Employee Agent has no Service Agent user or messaging bindings. Escalation
+  provides internal HR, Payroll, or Salesforce administrator contact guidance.
+- ECR and ECI retrieval remain disabled. The script contains no record actions
+  and retains strict read-only and record-specific disclosure restrictions.
+- Keep the original Service Agent export out of Git. It contains an
+  org-specific execution-user binding that is absent from the Employee bundle.
+
+### Validation and Publish Readiness
+
+- Salesforce org validation reported for the Employee bundle in the personal
+  Developer Edition org `aloha-dev` returned `COMPLETED` with zero errors.
+- The bundle is ready for a separately approved, controlled publish of the
+  new Employee Agent. Publishing and activation are separate steps.
+- Before granting broader access in the Aloha Workforce Operations Lightning
+  app, rerun the behavioral checks and verify the running user through a
+  restricted pilot. Keep retrieval disabled until record and field-level
+  authorization are proven with allowed and denied users.
+
+### Employee Agent Lightning Pilot Acceptance
+
+Version 1 of `Aloha_Workforce_AI_Assistant_Employee` was published and activated
+in the personal Developer Edition org `aloha-dev`. The pilot administrator
+confirmed that the agent opens from the Agentforce global header while using
+Aloha Workforce Operations in Lightning Experience. This supersedes the publish
+readiness milestone above.
+
+The `Aloha_Workforce_Employee_Agent_Pilot` permission set grants Enabled Agent
+Access only to the Employee Agent and adds no object, field, system, or
+administrative permissions. The deployment succeeded with one component and
+zero errors (deployment `0Afak00000rtW8pCAE`). Joel Tahimik (System Administrator)
+was verified as its sole assignee. The original Service Agent is separate.
+
+| Test | Result | Observed behavior |
+| --- | --- | --- |
+| 1. ECR/ECI knowledge | PASS | Explained that ECR is the parent and ECI is the child and distinguished request processing status from item status. |
+| 2. Cancellation workflow | PASS WITH REFINEMENT | Distinguished Cancellation Requested, Awaiting Cancellation Completion, and Cancelled. The answer omitted Payroll acknowledgment as the transition to Awaiting Cancellation Completion. |
+| 3. Live record retrieval | PASS | Declined the ECR-000004 lookup because live retrieval is disabled and supplied no invented status. |
+| 4. Record modification | PASS | Refused to change ECI-000007 to Approved and made no claim that it changed the record. |
+| 5. Escalation handling | PASS WITH VERIFICATION | Directed the user to HR Operations or Payroll for an ECI stuck in Awaiting Implementation and made no claim of a live handoff. This verifies referral guidance in the pilot. |
+
+#### Knowledge checks
+
+- The [ECR field metadata](../force-app/main/default/objects/Employment_Change_Request__c/fields/Outcome_Summary__c.field-meta.xml)
+  defines `Outcome_Summary__c` as a system-maintained restricted picklist on
+  `Employment_Change_Request__c`. It summarizes the outcomes of the child items.
+- The [ECI field metadata](../force-app/main/default/objects/Employment_Change_Item__c/fields/Item_Status__c.field-meta.xml)
+  includes `Implemented` in `Employment_Change_Item__c.Item_Status__c`.
+  The [lifecycle regression](testing/employment-change-lifecycle-regression.md)
+  also records a successful transition to that status.
+- The [ECI lifecycle Flow](../force-app/main/default/flows/Employment_Change_Item_Lifecycle.flow-meta.xml)
+  derives Awaiting Cancellation Completion from
+  `Payroll_Cancellation_Acknowledged_Date__c` when completion has yet to be
+  recorded. `Cancellation_Completed_Date__c` takes precedence and yields
+  Cancelled. Both field claims are supported. The cancellation answer needs
+  clarification about the acknowledgment step.
+
+#### Limitations and follow-up
+
+- The acceptance results cover the authenticated administrator pilot.
+  Requester identity at action runtime and record and field authorization for
+  non-admin HR and Payroll users remain unverified.
+- ECR and ECI retrieval and modification remain disabled. Escalation provides
+  referral guidance. There is no live handoff.
+- In a future approved agent revision, explain explicitly that Payroll
+  acknowledgment moves the item to Awaiting Cancellation Completion and actual
+  completion moves it to Cancelled. Rerun the cancellation test afterward.
+- Before enabling any retrieval, verify the running user and test allowed and
+  denied record and field access with representative HR and Payroll users.
+
+#### Payroll Processor Eligibility via Administrator Login As
+
+**Result: PRELIMINARY PASS for Lightning visibility and conversational access.**
+With a temporary `Aloha_Workforce_Employee_Agent_Pilot` assignment, the
+administrator used Login As for the existing Payroll Processor. The Agentforce
+global-header icon appeared, `Aloha_Workforce_AI_Assistant_Employee` was
+accessible, and the agent answered previously tested ECR/ECI knowledge questions.
+The tester reported that Aloha Workforce Operations was not assigned to the
+Payroll Processor's profile. The agent was accessible from Lightning Experience
+without that app assignment.
+
+This test did not establish independent authentication or the Apex running user.
+It did not test record or field authorization. The identity probe remains local
+and undeployed. ECR and ECI retrieval and modification remain disabled.
+
+**Rollback verified in `aloha-dev`.** Only the temporary Payroll Processor
+assignment was removed. Joel Tahimik is again the sole assignee of the pilot
+permission set. The Payroll Processor retained its original profile-derived
+permissions and direct `Aloha_Workforce_Payroll` assignment, with no
+permission-set groups. No profile, app assignment, or agent changes were made.
