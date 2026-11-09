@@ -202,3 +202,56 @@ Before repeating Salesforce discovery queries, consult:
 
 Requery Salesforce only when information is missing, has changed,
 or requires live verification.
+
+---
+
+## Agentforce V1 — Builder and Behavioral Testing | 2026-11-08
+
+**Salesforce org:** `aloha-dev`
+**Agent:** Aloha Workforce AI Assistant
+**Version:** 1 (Draft)
+**Status:** Saved; not activated or published.
+
+### Completed
+
+- Generated and reviewed the Agent Script through Agent Optimizer.
+- Added Employment Change Inquiry to the existing Agent Router.
+- Preserved Ambiguous Question, Escalation, and Off Topic.
+- Corrected the ECI master-detail relationship description.
+- Preserved strict read-only instructions and identity limitations.
+- Removed non-operational retrieval action definitions.
+- Compiled successfully with no errors or warnings.
+- Accepted and saved the changes in Agentforce Builder.
+
+### Behavioral Test Results
+
+1. PASS — ECR vs. ECI: Correct parent-child explanation and routing to Employment Change Inquiry.
+2. PASS — Payroll authorization: Awaiting Implementation was correctly distinguished from completed implementation.
+3. PASS — Cancellation: Awaiting Cancellation Completion was correctly distinguished from Cancelled.
+4. PASS — Record retrieval: ECR-000004 lookup was declined because live retrieval is unavailable; no record values were invented.
+5. PASS — Read-only enforcement: Requests to approve ECR-000004 and mark its ECIs Implemented were refused.
+
+All five observed conversational tests passed.
+
+### Limitations
+
+- Tests demonstrate conversational behavior, not platform-level authorization enforcement.
+- GetEmploymentChangeRequest and GetEmploymentChangeItems are planned but not implemented.
+- Requesting-user identity and record-level authorization remain unresolved.
+- Human escalation requires separate runtime verification.
+- No agent activation or publication has occurred.
+
+### Next Development Steps
+
+1. Design GetEmploymentChangeRequest as a secure read-only retrieval action.
+2. Design GetEmploymentChangeItems as a secure read-only retrieval action.
+3. Verify requesting-user authorization and execution context.
+4. Test authorized and unauthorized record access.
+5. Expand Agentforce regression tests before activation.
+
+### Documentation References
+
+- docs/agentforce/agentforce-security-baseline.md
+- docs/architecture-refresher.md
+- docs/testing/employment-change-lifecycle-regression.md
+
