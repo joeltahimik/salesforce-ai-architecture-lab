@@ -176,6 +176,21 @@ and channels, including Flow and the separate Service Agent, require their
 own execution-context verification. ECR and ECI retrieval and modification
 remain disabled.
 
+### Stage 3C and 3D Platform Profile Baseline
+
+The shared Aloha Workforce Platform User profile provides the base access for
+Payroll Processor and Aloha StandardTester. Salesforce API verification showed
+that Stage 3C disabled Setup, audit history, role hierarchy, and license
+utilization permissions. Stage 3D disabled Email Administration and Manage
+Email Templates. All six flags were false for both personas after the changes.
+
+Payroll Processor retained the dedicated payroll and app-access assignments,
+Work Locations visibility, and access to the sampled ECR and ECI records.
+Aloha StandardTester remained excluded from those samples. Profile assignments,
+sharing, and Agentforce configuration were unchanged. Direct-login checks are
+pending. See the [platform profile checkpoint](../development-checkpoint.md#platform-user-least-privilege-hardening)
+for the test scope, backup status, and follow-up checks.
+
 ## 7. Open Security and Implementation Questions
 
 - Verify trusted requester identity for each proposed retrieval action and

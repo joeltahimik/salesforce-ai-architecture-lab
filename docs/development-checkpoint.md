@@ -6,13 +6,13 @@
 
 ## Current Project State
 
-**Latest milestone:** Agentforce Identity Pilot Stage 3B verified and rolled back.
+**Latest milestone:** Stage 3C and 3D platform profile hardening passed API
+verification. Direct-login regression checks are pending.
 
 **Next proposed phase:** Experience Cloud Employer Portal (planned).
 
-**Reviewed Git baseline:** `e3b5351` on `main` (Add Employee Agent V1 and
-document pilot acceptance). The Stage 3B checkpoint changes are pending
-locally.
+**Prior Git checkpoint:** `35b972e` on `main` (Checkpoint Agentforce identity
+pilot and verified rollback).
 
 **Current development environment:** Personal Windows PC, PowerShell,
 repository `joeltahimik/salesforce-ai-architecture-lab`, branch `main`.
@@ -91,7 +91,7 @@ runtime permissions require separate testing.
 - Investigate direct editing of process-controlled lifecycle fields.
 - Verify Flow execution access and runtime permissions.
 - Refine Payroll app and tab visibility.
-- Review and harden inherited Platform profile permissions.
+- Complete direct-login regression checks for the platform profile cleanup.
 - Document final security matrix and acceptance evidence.
 - Commit the completed security sprint.
 
@@ -490,16 +490,37 @@ remaining references. Both original agents stayed Active on V1 with unchanged
 version IDs and modification timestamps. Payroll Processor retained the
 original payroll and app-access assignments and Work Locations tab visibility.
 
-### Deferred Payroll Processor Profile Remediation
+### Platform User Least-Privilege Hardening
 
-The administrative permission audit traced Setup visibility to the Aloha
-Workforce Platform User profile. It grants View Setup and Configuration,
-View Setup Audit Trail, role hierarchy and license utilization visibility,
-Email Administration, and Manage Email Templates. The audited sources had no
-broad user, permission, data, Apex, Flow, or Agentforce administration grants.
-Setup menu visibility alone does not establish authority to make changes.
+Payroll Processor and Aloha StandardTester share the Aloha Workforce Platform
+User profile. Payroll Processor receives operational access through separate
+payroll and app-access permission sets and payroll sharing. Aloha StandardTester
+serves as the baseline persona without payroll privileges. Neither persona
+requires Salesforce administration for its intended duties.
 
-Treat this as a separate least-privilege review. Confirm whether either of the
-two active profile users needs Setup visibility before proposing removal of
-View Setup and Configuration. Review audit trail and email grants separately
-against job duties. This remediation remains pending approval.
+| Stage | Profile permissions disabled | Verification |
+| --- | --- | --- |
+| 3C | `ViewSetup`, `ViewSetupAuditTrail`, `ViewRoles`, `ViewLicenseUtilization` | API PASS. All four changed from enabled to disabled for both users. |
+| 3D | `EmailAdministration`, `EmailTemplateManagement` | API PASS. Salesforce validated the individual changes, the combined change, and its rollback package. The two-permission profile update succeeded, and all six permissions were verified disabled for both users. |
+
+Before-and-after API checks matched for unrelated system permissions, profile
+and permission-set assignments, sharing memberships, and checked object and
+field permissions. Payroll Processor retained the Aloha Workforce Operations
+app and Work Locations tab grants. On the sampled records, Payroll Processor
+retained ECR read access and ECI read/edit access. Aloha StandardTester remained
+without read or edit access to either sample. The original Employee and
+Service Agents remained Active on V1. The Identity Pilot remained Inactive
+with both pilot permission sets unassigned.
+
+Restricted backups were saved outside the repository for both stages and
+verified readable with the original permission values. Rollback was not
+needed. The repository profile XML was outside the change scope and does not
+reflect the verified live permission state. Any future profile deployment
+requires a separately reviewed reconciliation against the live profile.
+
+**Direct-login regression checks: PENDING.** In fresh sessions, confirm both
+personas lose access to the affected administrative pages. Confirm Payroll
+Processor can open Aloha Workforce Operations, Work Locations, and the
+permitted ECR and ECI. Confirm Aloha StandardTester can open their normal
+Lightning landing page and is denied access to the same ECR and ECI. Use the
+existing test records and leave them unsaved.
