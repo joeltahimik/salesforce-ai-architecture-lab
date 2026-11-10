@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <applicationVisibilities>
+        <application>Aloha_Workforce_Operations</application>
+        <visible>true</visible>
+    </applicationVisibilities>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>Aloha Workforce Operations App Access</label>
+    <tabSettings>
+        <tab>Work_Location__c</tab>
+        <visibility>Visible</visibility>
+    </tabSettings>
+</PermissionSet>

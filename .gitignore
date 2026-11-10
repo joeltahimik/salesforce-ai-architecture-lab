@@ -50,3 +50,6 @@ aloha-auth.json
 
 # Temporary CLI and diagnostic output
 cli-output/
+
+# Sensitive original Service Agent export
+/aloha-workforce-v1-source.txt

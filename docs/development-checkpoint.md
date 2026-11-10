@@ -1,28 +1,28 @@
 # Aloha Workforce Solutions | Development Checkpoint
 
-**Last checkpoint review:** 2026-11-03
+**Last checkpoint review:** 2026-11-09
 
 **Start here:** [Architecture Refresher](architecture-refresher.md)
 
 ## Current Project State
 
-**Active sprint:** Payroll Processor Persona and Least-Privilege Security
+**Latest milestone:** Agentforce Identity Pilot Stage 3B verified and rolled back.
 
-**Last confirmed Git checkpoint:** `92e2313`
+**Next proposed phase:** Experience Cloud Employer Portal (planned).
 
-**Commit message:**
-WIP: Build payroll persona security and request integrity controls
+**Reviewed Git baseline:** `e3b5351` on `main` (Add Employee Agent V1 and
+document pilot acceptance). The Stage 3B checkpoint changes are pending
+locally.
 
-**Development environment:**
-GitHub Codespaces, repository `joeltahimik/salesforce-ai-architecture-lab`,
-branch `main`.
+**Current development environment:** Personal Windows PC, PowerShell,
+repository `joeltahimik/salesforce-ai-architecture-lab`, branch `main`.
 
 **Salesforce org alias:** `aloha-dev`
 
-**Last confirmed connection:** Connected, org ID `00Dak00001EqrL3EAJ`.
+**Last verified org:** Personal Salesforce Developer Edition, `aloha-dev`.
 
-The Codespace was reactivated and automatic deletion was disabled.
-Reconfirm its current state when resuming after a long absence.
+Earlier development used GitHub Codespaces. During that phase, the Codespace
+was reactivated and automatic deletion was disabled.
 
 ## Completed Architecture
 
@@ -63,10 +63,7 @@ simultaneous Draft-reset and requested-value modification.
 **Metadata backup:**
 `documentation/metadata-backups/20261103-192543-request-lock-rule.xml`
 
-**Dedicated test records:**
-- Case: `500ak00003miwSvAAI`
-- ECR-000003: `a06ak00000hUVTrAAO`
-- ECI-000006: `a05ak00000mtRDeAAM`
+The dedicated test records were a parent Case, ECR-000003, and ECI-000006.
 
 **Verified tests:**
 1. Draft Requested Value edit succeeded.
@@ -100,7 +97,7 @@ runtime permissions require separate testing.
 
 ## Resume Procedure
 
-1. Open the existing GitHub Codespace.
+1. Open the local repository in PowerShell on the Windows development PC.
 2. Confirm branch and working tree with `git status --short`.
 3. Confirm the Salesforce connection with `sf org display --target-org aloha-dev`.
 4. Read this checkpoint and `docs/architecture-refresher.md`.
@@ -109,7 +106,13 @@ runtime permissions require separate testing.
 
 ## Future Roadmap
 
-After the Payroll security sprint:
+The next proposed development phase is the **Experience Cloud Employer
+Portal**. This phase is planned. The proposed design work covers employer
+sign-in, employer-specific access to workforce requests, and tests that
+verify users cannot see another employer's records. The existing request
+lifecycle and Payroll processing boundaries apply to the proposed design.
+
+Other roadmap items:
 
 - Expand operational features and testing.
 - Develop integration architecture.
@@ -300,8 +303,8 @@ readiness milestone above.
 The `Aloha_Workforce_Employee_Agent_Pilot` permission set grants Enabled Agent
 Access only to the Employee Agent and adds no object, field, system, or
 administrative permissions. The deployment succeeded with one component and
-zero errors (deployment `0Afak00000rtW8pCAE`). Joel Tahimik (System Administrator)
-was verified as its sole assignee. The original Service Agent is separate.
+zero errors. The pilot administrator was verified as its sole assignee. The
+original Service Agent is separate.
 
 | Test | Result | Observed behavior |
 | --- | --- | --- |
@@ -330,8 +333,9 @@ was verified as its sole assignee. The original Service Agent is separate.
 #### Limitations and follow-up
 
 - The acceptance results cover the authenticated administrator pilot.
-  Requester identity at action runtime and record and field authorization for
-  non-admin HR and Payroll users remain unverified.
+  Stage 3B later verified execution identity for the temporary diagnostic
+  only. Record and field authorization for HR and Payroll users still
+  requires separate testing.
 - ECR and ECI retrieval and modification remain disabled. Escalation provides
   referral guidance. There is no live handoff.
 - In a future approved agent revision, explain explicitly that Payroll
@@ -351,12 +355,151 @@ The tester reported that Aloha Workforce Operations was not assigned to the
 Payroll Processor's profile. The agent was accessible from Lightning Experience
 without that app assignment.
 
-This test did not establish independent authentication or the Apex running user.
-It did not test record or field authorization. The identity probe remains local
-and undeployed. ECR and ECI retrieval and modification remain disabled.
+Independent authentication, Apex execution identity, and record and field
+authorization were outside the scope of this Login As test. At the time, the
+identity probe was still local. The later deployment and Stage 3B results
+are recorded below. ECR and ECI retrieval and modification remain disabled.
 
 **Rollback verified in `aloha-dev`.** Only the temporary Payroll Processor
-assignment was removed. Joel Tahimik is again the sole assignee of the pilot
-permission set. The Payroll Processor retained its original profile-derived
-permissions and direct `Aloha_Workforce_Payroll` assignment, with no
+assignment was removed. The pilot administrator is again the sole assignee of
+the pilot permission set. The Payroll Processor retained its original
+profile-derived permissions and direct `Aloha_Workforce_Payroll` assignment, with no
 permission-set groups. No profile, app assignment, or agent changes were made.
+
+### Execution Identity Pilot Apex Deployment
+
+Stage 1 succeeded in `aloha-dev`. The API 67.0 deployment contained only
+`AlohaAgentIdentityProbe`,
+`AlohaAgentIdentityProbeTest`, and `Aloha_Identity_Pilot_Apex_Access`.
+`RunSpecifiedTests` ran the probe test with one pass, zero errors, and 100%
+probe coverage.
+
+The deployed probe matched the reviewed source and performs no SOQL, DML,
+or callouts. The permission set grants access only to the probe class and has
+no assignees. The temporary `Aloha_Workforce_Identity_Pilot` authoring bundle
+revalidated successfully against the deployed Apex with zero warnings.
+
+At the close of Stage 1, the temporary agent was unpublished and inactive,
+and its agent-access permission set was pending deployment. No trace flags
+were created. The subsequent milestones are recorded below.
+
+### Payroll Processor Lightning App Access
+
+Direct Payroll Processor sign-in was confirmed by the project owner. The test
+user retains the Salesforce Platform license, Aloha Workforce Platform User
+profile, and `Aloha_Workforce_Payroll` assignment. The standard Lightning app
+`Aloha_Workforce_Operations` is visible org-wide in App Launcher, while the
+user's profile marked it hidden and the existing Payroll permission set had
+no app visibility entry.
+
+The app-access deployment added only
+`Aloha_Workforce_Operations_App_Access`. Retrieved metadata confirmed one
+app visibility grant and no additional permissions. Payroll Processor is its
+sole assignee. Before-and-after checks matched for the original assignments,
+ECR and ECI object and field permissions, and record access to the two
+documented test records. No profile, license, sharing, or agent changes were
+made.
+
+The first directly authenticated Lightning session did not show the app tile.
+After signing out and back in directly as Payroll Processor, the project owner
+confirmed that the tile appeared in App Launcher and the app opened. No
+broader permissions were required.
+
+The temporary `Aloha_Workforce_Identity_Pilot` bundle revalidated in
+`aloha-dev` against the deployed Stage 1 Apex with zero warnings. The
+publication result is recorded below.
+
+#### Work Locations tab visibility
+
+After the app-access deployment, the project owner used Salesforce Setup to
+change the Work Locations tab (`Work_Location__c`) from `None` to `Visible`
+on `Aloha_Workforce_Operations_App_Access`. Setup Audit Trail recorded the
+change. Live metadata confirmed the tab setting, and Payroll Processor was
+verified as the sole assignee. The
+Aloha Workforce Platform User profile still lists the tab as `Hidden`.
+
+The [local permission-set metadata](../force-app/main/default/permissionsets/Aloha_Workforce_Operations_App_Access.permissionset-meta.xml)
+records the app grant and the Work Locations tab setting.
+
+To roll back the tab change only, open Setup, then Permission Sets, then
+Aloha Workforce Operations App Access. In Object Settings, open Work Locations,
+choose Edit, clear tab visibility to restore `None`, and save. Verify that
+Payroll Processor still has the app-access assignment and can open Aloha
+Workforce Operations.
+
+To roll back the separate app-access assignment, open Manage Assignments for
+Aloha Workforce Operations App Access and remove only Payroll Processor. Verify
+that the original Payroll permission set and profile-derived access remain.
+
+### Execution Identity Pilot Publication
+
+Stage 2 published only `Aloha_Workforce_Identity_Pilot` to `aloha-dev` using
+API 67.0 and a disposable DX project. Salesforce confirmed version 1 as
+Inactive. Both existing agent definitions matched their preflight state.
+
+Check-only validation of `Aloha_Identity_Pilot_Agent_Access` succeeded with
+zero component errors. Stage 3A subsequently deployed the permission set.
+
+### Execution Identity Pilot Agent Access
+
+Stage 3A passed post-deployment verification in `aloha-dev`. The deployment
+succeeded with one component and zero errors. The sole component,
+`Aloha_Identity_Pilot_Agent_Access`, grants access only to
+`Aloha_Workforce_Identity_Pilot`.
+
+Both `Aloha_Identity_Pilot_Agent_Access` and `Aloha_Identity_Pilot_Apex_Access`
+have zero direct assignees and no permission-set group memberships.
+
+| Agent API name | Version | Verified status |
+| --- | --- | --- |
+| `Aloha_Workforce_Identity_Pilot` | 1 | Inactive |
+| `Aloha_Workforce_AI_Assistant_Employee` | 1 | Active |
+| `Aloha_Workforce_AI_Assistant` | 1 | Active |
+
+The existing Employee and Service Agent definitions and versions were last
+modified before Stage 2, consistent with the preflight comparison.
+
+### Execution Identity Pilot Runtime Verification | 2026-11-09
+
+Stage 3B completed in `aloha-dev`. The test used the temporary
+`Aloha_Workforce_Identity_Pilot` V1 in Lightning Experience
+with Payroll Processor signed in directly in a private browser session.
+
+| Step | Result | Evidence |
+| --- | --- | --- |
+| 1–3. Preflight, activation, and Apex access | PASS | Verified the org, agent versions, and access baseline. Activated only the temporary pilot V1 and temporarily assigned `Aloha_Identity_Pilot_Apex_Access` to Payroll Processor. |
+| 4. Negative agent access | INCONCLUSIVE | Payroll Processor signed in directly and opened Aloha Workforce Operations, but the Agentforce interface was unavailable. The test could not establish a pilot-specific denial. |
+| 4B. Visibility comparison | PASS | After temporarily assigning `Aloha_Identity_Pilot_Agent_Access`, Payroll Processor signed in directly again and saw Aloha Workforce Identity Pilot in Lightning. The Step 4 outcome remains inconclusive. |
+| 5. Diagnostic trace | PASS | Verified a ten-minute Payroll Processor user trace with Apex Code at `WARN` and other categories at `NONE`. |
+| 6. Runtime identity | PASS | At 6:55:10 p.m. HST on November 9, 2026, the single `Run identity probe` turn returned “The diagnostic completed.” In the correlated restricted Apex log, the principal recorded with WARN marker `ALOHA_IDENTITY_PROBE_P1_82F7C4` and the `LogUserId` both identified Payroll Processor. |
+
+The result establishes the Apex execution principal for this diagnostic turn.
+The probe performs no SOQL, DML, or callouts, so CRUD, field-level security,
+and record-level authorization still require separate tests before any ECR or
+ECI retrieval is enabled. ECR and ECI retrieval and modification remain
+disabled. The [Agentforce security baseline](agentforce/agentforce-security-baseline.md#stage-3b-apex-execution-identity)
+records the authorization implications.
+
+#### Verified Stage 3B rollback
+
+**PASS.** `Aloha_Workforce_Identity_Pilot` V1 returned to Inactive. Both
+temporary assignments were removed, leaving the agent-access
+and Apex-access permission sets with zero assignees. The expired temporary
+trace was removed, followed by its debug level after confirming it had no
+remaining references. Both original agents stayed Active on V1 with unchanged
+version IDs and modification timestamps. Payroll Processor retained the
+original payroll and app-access assignments and Work Locations tab visibility.
+
+### Deferred Payroll Processor Profile Remediation
+
+The administrative permission audit traced Setup visibility to the Aloha
+Workforce Platform User profile. It grants View Setup and Configuration,
+View Setup Audit Trail, role hierarchy and license utilization visibility,
+Email Administration, and Manage Email Templates. The audited sources had no
+broad user, permission, data, Apex, Flow, or Agentforce administration grants.
+Setup menu visibility alone does not establish authority to make changes.
+
+Treat this as a separate least-privilege review. Confirm whether either of the
+two active profile users needs Setup visibility before proposing removal of
+View Setup and Configuration. Review audit trail and email grants separately
+against job duties. This remediation remains pending approval.

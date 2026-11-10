@@ -1,17 +1,22 @@
 # Aloha Workforce AI Assistant | Security Baseline
 
-**Verified:** 2026-11-08  
+**Initial verification:** 2026-11-08
+
 **Environment:** Personal Salesforce Developer Edition  
 **Org alias:** `aloha-dev`  
 **Repository:** `joeltahimik/salesforce-ai-architecture-lab`
 
 ## 1. Agentforce Configuration
 
+This section records the initial configuration. The
+[development checkpoint](../development-checkpoint.md) tracks later agent
+status and pilot milestones.
+
 - Agent: Aloha Workforce AI Assistant
 - Version: 1 (Draft)
 - Deployment target: Salesforce Lightning
 - Intended audience: Internal HR and Payroll staff
-- Execution user ID: `005ak00000nN7W1AAK`
+- Execution user: dedicated Einstein Agent User
 - Agent status: Not activated
 - Retrieval actions: Not implemented
 
@@ -30,15 +35,8 @@ Dedicated permission set:
 
 `Aloha_Workforce_AI_Read_Only`
 
-Permission Set ID:
-
-`0PSak00000hBkunGAC`
-
-Permission Set Assignment ID:
-
-`0Paak00001DozwLCAR`
-
-The permission set was successfully deployed to `aloha-dev`.
+The permission set was successfully deployed to `aloha-dev` and assigned to
+the dedicated Einstein Agent User.
 
 ### Object Permissions
 
@@ -84,10 +82,6 @@ Developer Name:
 
 `Aloha_Workforce_Payroll_Processors`
 
-Group ID:
-
-`00Gak00000mAX7dEAG`
-
 The existing ECR sharing rule grants Edit-level record sharing
 to this group.
 
@@ -98,10 +92,6 @@ permissions and other Salesforce security controls.
 
 User: Payroll Processor
 
-User ID:
-
-`005ak00000iuxHtAAI`
-
 Profile: Aloha Workforce Platform User
 
 Role: None
@@ -111,10 +101,6 @@ Active: Yes
 Permission set:
 
 `Aloha_Workforce_Payroll`
-
-Permission Set ID:
-
-`0PSak00000cj5FPGAY`
 
 Verified object permissions:
 
@@ -131,16 +117,13 @@ public group.
 Parent Employment Change Request:
 
 - Name: ECR-000004
-- ID: `a06ak00000hWVb0AAG`
-- Owner: Joel Tahimik
-- Owner ID: `005ak00000iGwY9AAK`
+- Owner: test administrator
 - Processing Status: Completed
 - Outcome Summary: Successful
 
 Child Employment Change Item:
 
 - Name: ECI-000007
-- ID: `a05ak00000mv2PdAAI`
 
 ### UserRecordAccess Results
 
@@ -173,10 +156,30 @@ be different Salesforce users.
 A Flow running in the agent's execution context does not
 automatically enforce the requesting employee's record access.
 
+### Stage 3B Apex Execution Identity
+
+On November 9, 2026, one diagnostic invocation from the directly authenticated
+Payroll Processor session in Lightning Experience passed. The temporary
+`Aloha_Workforce_Identity_Pilot` V1 invoked `AlohaAgentIdentityProbe`. Its
+restricted Apex log contained the expected WARN marker, and the principal
+reported by `UserInfo.getUserId()` matched both the authenticated Payroll
+Processor and the Apex log's `LogUserId`. The agent returned only a completion
+message. The [Stage 3B checkpoint](../development-checkpoint.md#execution-identity-pilot-runtime-verification--2026-11-09)
+records the invocation time, diagnostic marker, and verified rollback.
+
+This finding applies to the tested Employee Agent, Apex action, and Lightning
+session. The probe performs no database operations. CRUD, field-level security,
+and record-level access still require explicit enforcement and separate tests.
+Before enabling retrieval, verify trusted requester identity and test allowed
+and denied record and field access with representative users. Other actions
+and channels, including Flow and the separate Service Agent, require their
+own execution-context verification. ECR and ECI retrieval and modification
+remain disabled.
+
 ## 7. Open Security and Implementation Questions
 
-- Determine how authenticated Lightning user identity is
-  propagated to the Agentforce action.
+- Verify trusted requester identity for each proposed retrieval action and
+  channel before enabling it.
 - Verify actual Flow execution context.
 - Design secure record retrieval without blanket sharing.
 - Implement and test GetEmploymentChangeRequest.
