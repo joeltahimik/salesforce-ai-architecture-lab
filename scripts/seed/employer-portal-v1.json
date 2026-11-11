@@ -1,0 +1,275 @@
+{
+  "dataset": "AWS-PORTAL-V1",
+  "orgAlias": "aloha-dev",
+  "apiVersion": "68.0",
+  "timeline": {
+    "submitted": "2026-10-12T18:00:00Z",
+    "acknowledged": "2026-10-13T18:00:00Z",
+    "decided": "2026-10-14T18:00:00Z",
+    "effective": "2026-10-19",
+    "cancellationRequested": "2026-10-15",
+    "cancellationAcknowledged": "2026-10-16T18:00:00Z",
+    "cancellationCompleted": "2026-10-19T18:00:00Z"
+  },
+  "activeFlows": {
+    "Employment_Change_Item_Lifecycle": 4,
+    "Employment_Change_Request_Aggregation": 1,
+    "Employment_Change_Request_Uniqueness": 1,
+    "Request_Employment_Change": 1,
+    "Process_Employment_Change": 7,
+    "Record_Employment_Change_Implementation": 1,
+    "Request_Employment_Change_Cancellation": 4
+  },
+  "employers": [
+    {
+      "code": "A",
+      "name": "Fixture Harbor Lantern Hospitality",
+      "people": [
+        {
+          "number": 1,
+          "firstName": "Aven",
+          "lastName": "Harborfield",
+          "jobTitle": "Front Desk Associate",
+          "status": "Active",
+          "hireDate": "2021-01-15"
+        },
+        {
+          "number": 2,
+          "firstName": "Bexley",
+          "lastName": "Harborfield",
+          "jobTitle": "Guest Services Coordinator",
+          "status": "Active",
+          "hireDate": "2022-02-15"
+        },
+        {
+          "number": 3,
+          "firstName": "Cress",
+          "lastName": "Harborfield",
+          "jobTitle": "Facilities Technician",
+          "status": "Active",
+          "hireDate": "2023-03-15"
+        },
+        {
+          "number": 4,
+          "firstName": "Dalen",
+          "lastName": "Harborfield",
+          "jobTitle": "Housekeeping Lead",
+          "status": "Leave",
+          "hireDate": "2021-04-15"
+        },
+        {
+          "number": 5,
+          "firstName": "Elow",
+          "lastName": "Harborfield",
+          "jobTitle": "Reservations Clerk",
+          "status": "Terminated",
+          "hireDate": "2022-05-15",
+          "terminationDate": "2026-09-30"
+        }
+      ],
+      "requests": [
+        {
+          "number": 1,
+          "employee": 2,
+          "status": "In Progress",
+          "outcome": "Pending",
+          "items": [
+            {
+              "type": "Job Title",
+              "value": "Guest Services Lead",
+              "target": "Submitted"
+            },
+            {
+              "type": "Department",
+              "value": "Guest Experience",
+              "target": "Submitted"
+            }
+          ]
+        },
+        {
+          "number": 2,
+          "employee": 3,
+          "status": "Completed",
+          "outcome": "Successful",
+          "items": [
+            {
+              "type": "Job Title",
+              "value": "Senior Facilities Technician",
+              "target": "Implemented"
+            },
+            {
+              "type": "Employment Type",
+              "value": "Full Time",
+              "target": "Implemented"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "B",
+      "name": "Fixture Fernline Food Distribution",
+      "people": [
+        {
+          "number": 1,
+          "firstName": "Fenn",
+          "lastName": "Fernridge",
+          "jobTitle": "Warehouse Associate",
+          "status": "Active",
+          "hireDate": "2021-01-15"
+        },
+        {
+          "number": 2,
+          "firstName": "Gable",
+          "lastName": "Fernridge",
+          "jobTitle": "Dispatch Coordinator",
+          "status": "Active",
+          "hireDate": "2022-02-15"
+        },
+        {
+          "number": 3,
+          "firstName": "Hollis",
+          "lastName": "Fernridge",
+          "jobTitle": "Inventory Clerk",
+          "status": "Active",
+          "hireDate": "2023-03-15"
+        },
+        {
+          "number": 4,
+          "firstName": "Iven",
+          "lastName": "Fernridge",
+          "jobTitle": "Route Coordinator",
+          "status": "Leave",
+          "hireDate": "2021-04-15"
+        },
+        {
+          "number": 5,
+          "firstName": "Jory",
+          "lastName": "Fernridge",
+          "jobTitle": "Packing Associate",
+          "status": "Terminated",
+          "hireDate": "2022-05-15",
+          "terminationDate": "2026-09-30"
+        }
+      ],
+      "requests": [
+        {
+          "number": 1,
+          "employee": 2,
+          "status": "In Progress",
+          "outcome": "Pending",
+          "items": [
+            {
+              "type": "Job Title",
+              "value": "Senior Dispatch Coordinator",
+              "target": "Awaiting Implementation"
+            },
+            {
+              "type": "Department",
+              "value": "Logistics Operations",
+              "target": "Awaiting Implementation"
+            }
+          ]
+        },
+        {
+          "number": 2,
+          "employee": 3,
+          "status": "Completed",
+          "outcome": "Mixed Outcome",
+          "items": [
+            {
+              "type": "Job Title",
+              "value": "Inventory Coordinator",
+              "target": "Implemented"
+            },
+            {
+              "type": "Employment Type",
+              "value": "Full Time",
+              "target": "Rejected"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "C",
+      "name": "Fixture Blue Reef Facilities",
+      "people": [
+        {
+          "number": 1,
+          "firstName": "Keir",
+          "lastName": "Reefbrook",
+          "jobTitle": "Maintenance Technician",
+          "status": "Active",
+          "hireDate": "2021-01-15"
+        },
+        {
+          "number": 2,
+          "firstName": "Lark",
+          "lastName": "Reefbrook",
+          "jobTitle": "Service Dispatcher",
+          "status": "Active",
+          "hireDate": "2022-02-15"
+        },
+        {
+          "number": 3,
+          "firstName": "Merrin",
+          "lastName": "Reefbrook",
+          "jobTitle": "Site Coordinator",
+          "status": "Active",
+          "hireDate": "2023-03-15"
+        },
+        {
+          "number": 4,
+          "firstName": "Niven",
+          "lastName": "Reefbrook",
+          "jobTitle": "Custodial Lead",
+          "status": "Leave",
+          "hireDate": "2021-04-15"
+        },
+        {
+          "number": 5,
+          "firstName": "Orla",
+          "lastName": "Reefbrook",
+          "jobTitle": "Facilities Assistant",
+          "status": "Terminated",
+          "hireDate": "2022-05-15",
+          "terminationDate": "2026-09-30"
+        }
+      ],
+      "requests": [
+        {
+          "number": 1,
+          "employee": 2,
+          "status": "Completed",
+          "outcome": "Rejected",
+          "items": [
+            {
+              "type": "Job Title",
+              "value": "Senior Maintenance Technician",
+              "target": "Rejected"
+            },
+            {
+              "type": "Department",
+              "value": "Field Operations",
+              "target": "Rejected"
+            }
+          ]
+        },
+        {
+          "number": 2,
+          "employee": 3,
+          "status": "Completed",
+          "outcome": "Cancelled",
+          "items": [
+            {
+              "type": "Job Title",
+              "value": "Service Desk Lead",
+              "target": "Cancelled"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -6,9 +6,9 @@
 
 ## Current Project State
 
-**Latest milestone:** The targeted Employment sharing test passed in Lightning,
-and API checks verified cleanup. Stage 3C and 3D profile hardening passed API
-verification. The broader direct-login regression checks are pending.
+**Latest milestone:** Employer Portal Stage 2 created and verified 65 synthetic
+records. Read-only Plan verified zero proposed creates both after seeding and
+after the intentional Account display-name changes.
 
 **Next proposed phase:** Experience Cloud Employer Portal (planned).
 
@@ -551,3 +551,30 @@ membership, and Employment sharing defaults matched preflight.
 **Agreed architecture (Option A).** Payroll Processor may read authorized
 Employment records. Employment changes must go through the ECR/ECI workflow.
 Designing permanent, least-privilege Employment record sharing is future work.
+
+### Employer Portal Seed Data
+
+Stage 2 created 65 synthetic records in nine successful transactions across
+Harbor Lantern Hospitality, Fernline Food Distribution, and Blue Reef
+Facilities. The fixtures include 15 Contacts, 15 Employment relationships,
+six Service Requests, six Case Employment junctions, six ECRs, eleven ECIs,
+and three Contact Authorizations. External portal users remain future work.
+
+All six ECR lifecycle scenarios matched the expected status and outcome.
+The original read-only Plan after Apply proposed zero additional creates.
+The three Accounts were later renamed to remove the Fixture prefix. The
+reconciled Plan still recognized all 65 records through the local manifest
+and proposed zero creates. The manifest's Salesforce IDs identify existing
+fixtures. The script accepts the original and approved display names for
+each Account and validates ownership and relationships. A read-only Plan
+with the manifest absent stopped on existing fixture candidates.
+
+Payroll Processor has object-level Read on Employment. After the seed,
+Payroll Processor had Read Only on all six ECRs, Read/Edit on all eleven
+ECIs, and no record-level Read or Edit on the fifteen Employments.
+Permanent Employment record-sharing design remains open under Option A.
+
+The All Employers and All Workforce Contacts list views exclude Developer
+Edition sample records using the sample owner's alias. This filter controls
+list results, while Salesforce record sharing controls record access. See the
+[Employer Portal fixture and lifecycle details](testing/employer-portal-test-data.md).
