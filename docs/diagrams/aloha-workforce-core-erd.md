@@ -11,7 +11,7 @@
 
 Aloha Workforce Solutions provides HR and workforce services to employers.
 
-An **Account** represents an employer, such as Koa Surf & Hospitality LLC.
+An **Account** represents an employer.
 
 A **Contact** represents a person. A person may be an employee, an employer
 administrator, or both.
@@ -21,7 +21,7 @@ specific employer.
 
 For example:
 
-> Kai Nakamura works for Koa Surf & Hospitality.
+> A worker is employed by a hospitality company.
 
 That fact belongs to Employment, not Contact.
 
@@ -36,7 +36,7 @@ Account and during what effective period.
 
 For example:
 
-> Malia Kealoha is authorized to perform Payroll actions for Koa during 2026.
+> An employer representative is authorized to perform Payroll actions for that employer during a defined period.
 
 Authorization is therefore a fact about the relationship between the person
 and employer, not simply an attribute of Contact.

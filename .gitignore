@@ -53,3 +53,15 @@ cli-output/
 
 # Sensitive original Service Agent export
 /aloha-workforce-v1-source.txt
+
+/docs/codex-prompts/
+
+# Private development tooling and local fixture state
+/scripts/
+/documentation/metadata-backups/
+/config/project-scratch-def.json
+/.vscode/launch.json
+/.vscode/settings.json
+employer-portal-*.manifest.json
+employer-portal-*.manifest.json.tmp
+employer-portal-*.manifest.json.lock

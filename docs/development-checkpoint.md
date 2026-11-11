@@ -12,19 +12,6 @@ after the intentional Account display-name changes.
 
 **Next proposed phase:** Experience Cloud Employer Portal (planned).
 
-**Prior Git checkpoint:** `35b972e` on `main` (Checkpoint Agentforce identity
-pilot and verified rollback).
-
-**Current development environment:** Personal Windows PC, PowerShell,
-repository `joeltahimik/salesforce-ai-architecture-lab`, branch `main`.
-
-**Salesforce org alias:** `aloha-dev`
-
-**Last verified org:** Personal Salesforce Developer Edition, `aloha-dev`.
-
-Earlier development used GitHub Codespaces. During that phase, the Codespace
-was reactivated and automatic deletion was disabled.
-
 ## Completed Architecture
 
 - Core workforce data model and relationships.
@@ -44,10 +31,10 @@ was reactivated and automatic deletion was disabled.
    Case and Case_Employment access.
 2. Revised Payroll permission set assignment succeeded.
 3. Payroll Processor saw no ECRs before record sharing.
-4. Populating Payroll Submitted Date on ECR-000000 created a
+4. Populating Payroll Submitted Date on the submitted request created a
    criteria-based sharing row.
-5. Payroll Processor could then see ECR-000000.
-6. Payroll Processor could access ECI-000002 through its parent.
+5. Payroll Processor could then see the submitted request.
+6. Payroll Processor could access the child change item through its parent.
 7. Payroll Processor successfully edited Requested Value before
    the new validation rule.
 8. After deployment, Salesforce rejected the same type of edit.
@@ -59,12 +46,9 @@ was reactivated and automatic deletion was disabled.
 **Improvement:** Added `PRIORVALUE(Item_Status__c)` to prevent
 simultaneous Draft-reset and requested-value modification.
 
-**Deployment:** Successfully deployed to `aloha-dev`.
+**Deployment:** Successfully deployed to the development org.
 
-**Metadata backup:**
-`documentation/metadata-backups/20261103-192543-request-lock-rule.xml`
-
-The dedicated test records were a parent Case, ECR-000003, and ECI-000006.
+The test used a dedicated Case, ECR, and ECI.
 
 **Verified tests:**
 1. Draft Requested Value edit succeeded.
@@ -72,14 +56,8 @@ The dedicated test records were a parent Case, ECR-000003, and ECI-000006.
 3. Simultaneous status reset to Draft and Requested Value modification was blocked.
 4. Read-only SOQL confirmed the rejected transaction preserved both fields.
 
-**Final verified ECI-000006 state:**
-- Item Status: Submitted
-- Requested Value: Security Test Department B
-
-**Earlier test-data correction:**
-ECI-000002 Requested Value was restored to `People Operations`.
-A subsequent unauthorized update failed, and read-only verification
-confirmed the original value remained unchanged.
+Read-back confirmed that the rejected updates preserved the submitted status
+and original requested value.
 
 **Security scope:** Requested-value immutability is verified.
 Unauthorized status-only transitions and full Payroll Processor
@@ -95,15 +73,6 @@ runtime permissions require separate testing.
 - Complete direct-login regression checks for the platform profile cleanup.
 - Document final security matrix and acceptance evidence.
 - Commit the completed security sprint.
-
-## Resume Procedure
-
-1. Open the local repository in PowerShell on the Windows development PC.
-2. Confirm branch and working tree with `git status --short`.
-3. Confirm the Salesforce connection with `sf org display --target-org aloha-dev`.
-4. Read this checkpoint and `docs/architecture-refresher.md`.
-5. Inspect the relevant Salesforce records before changing anything.
-6. Work in small, testable steps and commit meaningful checkpoints.
 
 ## Future Roadmap
 
@@ -121,30 +90,11 @@ Other roadmap items:
 - Build reusable Python-based `sf-inspect` tooling.
 - Improve portfolio documentation and demonstrations.
 
-## Session Handoff Template
-
-At the end of each development session, update:
-
-- Date:
-- Current branch and commit:
-- What was completed:
-- What was deployed:
-- What was tested:
-- Known issues:
-- Exact next step:
-- Relevant commands or record IDs:
-
-**Reminder:** GitHub commits preserve source code. Salesforce org
-data, group membership, authentication, and runtime configuration
-may require separate verification or documentation.
-
----
-
 ## Agentforce Development Checkpoint | 2026-11-08
 
 **Current focus:** Aloha Workforce AI Assistant configuration.
 
-**Salesforce org:** `aloha-dev`
+**Environment:** Salesforce development org
 
 ### Completed
 
@@ -211,7 +161,7 @@ or requires live verification.
 
 ## Agentforce V1 — Builder and Behavioral Testing | 2026-11-08
 
-**Salesforce org:** `aloha-dev`
+**Environment:** Salesforce development org
 **Agent:** Aloha Workforce AI Assistant
 **Version:** 1 (Draft)
 **Status:** Saved; not activated or published.
@@ -232,8 +182,8 @@ or requires live verification.
 1. PASS — ECR vs. ECI: Correct parent-child explanation and routing to Employment Change Inquiry.
 2. PASS — Payroll authorization: Awaiting Implementation was correctly distinguished from completed implementation.
 3. PASS — Cancellation: Awaiting Cancellation Completion was correctly distinguished from Cancelled.
-4. PASS — Record retrieval: ECR-000004 lookup was declined because live retrieval is unavailable; no record values were invented.
-5. PASS — Read-only enforcement: Requests to approve ECR-000004 and mark its ECIs Implemented were refused.
+4. PASS — Record retrieval: the sample request lookup was declined because live retrieval is unavailable; no record values were invented.
+5. PASS — Read-only enforcement: Requests to approve the sample request and mark its ECIs Implemented were refused.
 
 All five observed conversational tests passed.
 
@@ -285,7 +235,7 @@ not change the active Service Agent.
 ### Validation and Publish Readiness
 
 - Salesforce org validation reported for the Employee bundle in the personal
-  Developer Edition org `aloha-dev` returned `COMPLETED` with zero errors.
+  Developer Edition org returned `COMPLETED` with zero errors.
 - The bundle is ready for a separately approved, controlled publish of the
   new Employee Agent. Publishing and activation are separate steps.
 - Before granting broader access in the Aloha Workforce Operations Lightning
@@ -296,7 +246,7 @@ not change the active Service Agent.
 ### Employee Agent Lightning Pilot Acceptance
 
 Version 1 of `Aloha_Workforce_AI_Assistant_Employee` was published and activated
-in the personal Developer Edition org `aloha-dev`. The pilot administrator
+in the development org. The pilot administrator
 confirmed that the agent opens from the Agentforce global header while using
 Aloha Workforce Operations in Lightning Experience. This supersedes the publish
 readiness milestone above.
@@ -311,8 +261,8 @@ original Service Agent is separate.
 | --- | --- | --- |
 | 1. ECR/ECI knowledge | PASS | Explained that ECR is the parent and ECI is the child and distinguished request processing status from item status. |
 | 2. Cancellation workflow | PASS WITH REFINEMENT | Distinguished Cancellation Requested, Awaiting Cancellation Completion, and Cancelled. The answer omitted Payroll acknowledgment as the transition to Awaiting Cancellation Completion. |
-| 3. Live record retrieval | PASS | Declined the ECR-000004 lookup because live retrieval is disabled and supplied no invented status. |
-| 4. Record modification | PASS | Refused to change ECI-000007 to Approved and made no claim that it changed the record. |
+| 3. Live record retrieval | PASS | Declined the sample request lookup because live retrieval is disabled and supplied no invented status. |
+| 4. Record modification | PASS | Refused to change the sample change item to Approved and made no claim that it changed the record. |
 | 5. Escalation handling | PASS WITH VERIFICATION | Directed the user to HR Operations or Payroll for an ECI stuck in Awaiting Implementation and made no claim of a live handoff. This verifies referral guidance in the pilot. |
 
 #### Knowledge checks
@@ -345,31 +295,17 @@ original Service Agent is separate.
 - Before enabling any retrieval, verify the running user and test allowed and
   denied record and field access with representative HR and Payroll users.
 
-#### Payroll Processor Eligibility via Administrator Login As
+#### Preliminary Payroll Processor Eligibility
 
-**Result: PRELIMINARY PASS for Lightning visibility and conversational access.**
-With a temporary `Aloha_Workforce_Employee_Agent_Pilot` assignment, the
-administrator used Login As for the existing Payroll Processor. The Agentforce
-global-header icon appeared, `Aloha_Workforce_AI_Assistant_Employee` was
-accessible, and the agent answered previously tested ECR/ECI knowledge questions.
-The tester reported that Aloha Workforce Operations was not assigned to the
-Payroll Processor's profile. The agent was accessible from Lightning Experience
-without that app assignment.
-
-Independent authentication, Apex execution identity, and record and field
-authorization were outside the scope of this Login As test. At the time, the
-identity probe was still local. The later deployment and Stage 3B results
-are recorded below. ECR and ECI retrieval and modification remain disabled.
-
-**Rollback verified in `aloha-dev`.** Only the temporary Payroll Processor
-assignment was removed. The pilot administrator is again the sole assignee of
-the pilot permission set. The Payroll Processor retained its original
-profile-derived permissions and direct `Aloha_Workforce_Payroll` assignment, with no
-permission-set groups. No profile, app assignment, or agent changes were made.
+Lightning visibility and conversational access passed in a preliminary
+administrator-assisted test. The temporary access assignment was removed and
+the original Payroll permissions remained in place. Direct authentication and
+execution identity were tested separately. Record and field authorization for
+live retrieval still requires validation.
 
 ### Execution Identity Pilot Apex Deployment
 
-Stage 1 succeeded in `aloha-dev`. The API 67.0 deployment contained only
+Stage 1 succeeded in the development org. The API 67.0 deployment contained only
 `AlohaAgentIdentityProbe`,
 `AlohaAgentIdentityProbeTest`, and `Aloha_Identity_Pilot_Apex_Access`.
 `RunSpecifiedTests` ran the probe test with one pass, zero errors, and 100%
@@ -406,8 +342,8 @@ After signing out and back in directly as Payroll Processor, the project owner
 confirmed that the tile appeared in App Launcher and the app opened. No
 broader permissions were required.
 
-The temporary `Aloha_Workforce_Identity_Pilot` bundle revalidated in
-`aloha-dev` against the deployed Stage 1 Apex with zero warnings. The
+The temporary `Aloha_Workforce_Identity_Pilot` bundle revalidated against the
+deployed Stage 1 Apex with zero warnings. The
 publication result is recorded below.
 
 #### Work Locations tab visibility
@@ -422,19 +358,9 @@ Aloha Workforce Platform User profile still lists the tab as `Hidden`.
 The [local permission-set metadata](../force-app/main/default/permissionsets/Aloha_Workforce_Operations_App_Access.permissionset-meta.xml)
 records the app grant and the Work Locations tab setting.
 
-To roll back the tab change only, open Setup, then Permission Sets, then
-Aloha Workforce Operations App Access. In Object Settings, open Work Locations,
-choose Edit, clear tab visibility to restore `None`, and save. Verify that
-Payroll Processor still has the app-access assignment and can open Aloha
-Workforce Operations.
-
-To roll back the separate app-access assignment, open Manage Assignments for
-Aloha Workforce Operations App Access and remove only Payroll Processor. Verify
-that the original Payroll permission set and profile-derived access remain.
-
 ### Execution Identity Pilot Publication
 
-Stage 2 published only `Aloha_Workforce_Identity_Pilot` to `aloha-dev` using
+Stage 2 published only `Aloha_Workforce_Identity_Pilot` to the development org using
 API 67.0 and a disposable DX project. Salesforce confirmed version 1 as
 Inactive. Both existing agent definitions matched their preflight state.
 
@@ -443,7 +369,7 @@ zero component errors. Stage 3A subsequently deployed the permission set.
 
 ### Execution Identity Pilot Agent Access
 
-Stage 3A passed post-deployment verification in `aloha-dev`. The deployment
+Stage 3A passed post-deployment verification in the development org. The deployment
 succeeded with one component and zero errors. The sole component,
 `Aloha_Identity_Pilot_Agent_Access`, grants access only to
 `Aloha_Workforce_Identity_Pilot`.
@@ -462,7 +388,7 @@ modified before Stage 2, consistent with the preflight comparison.
 
 ### Execution Identity Pilot Runtime Verification | 2026-11-09
 
-Stage 3B completed in `aloha-dev`. The test used the temporary
+Stage 3B completed in the development org. The test used the temporary
 `Aloha_Workforce_Identity_Pilot` V1 in Lightning Experience
 with Payroll Processor signed in directly in a private browser session.
 
@@ -471,8 +397,8 @@ with Payroll Processor signed in directly in a private browser session.
 | 1–3. Preflight, activation, and Apex access | PASS | Verified the org, agent versions, and access baseline. Activated only the temporary pilot V1 and temporarily assigned `Aloha_Identity_Pilot_Apex_Access` to Payroll Processor. |
 | 4. Negative agent access | INCONCLUSIVE | Payroll Processor signed in directly and opened Aloha Workforce Operations, but the Agentforce interface was unavailable. The test could not establish a pilot-specific denial. |
 | 4B. Visibility comparison | PASS | After temporarily assigning `Aloha_Identity_Pilot_Agent_Access`, Payroll Processor signed in directly again and saw Aloha Workforce Identity Pilot in Lightning. The Step 4 outcome remains inconclusive. |
-| 5. Diagnostic trace | PASS | Verified a ten-minute Payroll Processor user trace with Apex Code at `WARN` and other categories at `NONE`. |
-| 6. Runtime identity | PASS | At 6:55:10 p.m. HST on November 9, 2026, the single `Run identity probe` turn returned “The diagnostic completed.” In the correlated restricted Apex log, the principal recorded with WARN marker `ALOHA_IDENTITY_PROBE_P1_82F7C4` and the `LogUserId` both identified Payroll Processor. |
+| 5. Diagnostic trace | PASS | The diagnostic evidence was captured. |
+| 6. Runtime identity | PASS | The Apex execution principal matched the authenticated Payroll Processor. |
 
 The result establishes the Apex execution principal for this diagnostic turn.
 The probe performs no SOQL, DML, or callouts, so CRUD, field-level security,
@@ -485,9 +411,7 @@ records the authorization implications.
 
 **PASS.** `Aloha_Workforce_Identity_Pilot` V1 returned to Inactive. Both
 temporary assignments were removed, leaving the agent-access
-and Apex-access permission sets with zero assignees. The expired temporary
-trace was removed, followed by its debug level after confirming it had no
-remaining references. Both original agents stayed Active on V1 with unchanged
+and Apex-access permission sets with zero assignees. The temporary diagnostic configuration was removed. Both original agents stayed Active on V1 with unchanged
 version IDs and modification timestamps. Payroll Processor retained the
 original payroll and app-access assignments and Work Locations tab visibility.
 
@@ -513,18 +437,11 @@ without read or edit access to either sample. The original Employee and
 Service Agents remained Active on V1. The Identity Pilot remained Inactive
 with both pilot permission sets unassigned.
 
-Restricted backups were saved outside the repository for both stages and
-verified readable with the original permission values. Rollback was not
-needed. The repository profile XML was outside the change scope and does not
-reflect the verified live permission state. Any future profile deployment
-requires a separately reviewed reconciliation against the live profile.
+The repository profile was outside the original change scope and differs from
+the verified live baseline. Review and reconcile it before including it in a
+deployment.
 
-**Direct-login regression checks: PENDING.** In fresh sessions, confirm both
-personas lose access to the affected administrative pages. Confirm Payroll
-Processor can open Aloha Workforce Operations, Work Locations, and the
-permitted ECR and ECI. Confirm Aloha StandardTester can open their normal
-Lightning landing page and is denied access to the same ECR and ECI. Use the
-existing test records and leave them unsaved.
+**Direct-login regression checks remain pending** for the affected administrative pages and permitted operational access.
 
 ### Employment Record Access Test
 
@@ -563,11 +480,9 @@ and three Contact Authorizations. External portal users remain future work.
 All six ECR lifecycle scenarios matched the expected status and outcome.
 The original read-only Plan after Apply proposed zero additional creates.
 The three Accounts were later renamed to remove the Fixture prefix. The
-reconciled Plan still recognized all 65 records through the local manifest
-and proposed zero creates. The manifest's Salesforce IDs identify existing
-fixtures. The script accepts the original and approved display names for
-each Account and validates ownership and relationships. A read-only Plan
-with the manifest absent stopped on existing fixture candidates.
+read-only verification recognized all 65 records and proposed zero creates.
+Record identity, ownership, and relationships were preserved. Duplicate or
+ambiguous matches stopped validation.
 
 Payroll Processor has object-level Read on Employment. After the seed,
 Payroll Processor had Read Only on all six ECRs, Read/Edit on all eleven

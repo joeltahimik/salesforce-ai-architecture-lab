@@ -333,7 +333,7 @@ Dynamic visibility is a usability mechanism and is not treated as the sole secur
 
 New Flows should use Auto-Layout whenever practical. Every production Flow element should participate in a valid execution path. Obsolete placeholders and disconnected development artifacts should be removed before activation.
 
-The repository includes `scripts/analyze-flow.py` as a structural Flow metadata guardrail.
+The project uses a structural Flow metadata check before accepting changes.
 
 Current checks include:
 
@@ -341,7 +341,7 @@ Current checks include:
 - no orphaned Flow elements
 - all connector targets exist
 
-A successful Salesforce deployment does not by itself prove that a Flow graph is structurally clean. The analyzer adds a repository-level validation step before a Flow change is committed.
+A successful Salesforce deployment does not by itself prove that a Flow graph is structurally clean. Structural validation checks the graph separately from deployment.
 
 ---
 
@@ -351,27 +351,25 @@ The Payroll decision architecture was acceptance-tested against the primary deci
 
 ### Approved Path
 
-ECI-000003 represented a Job Title change. The test demonstrated Payroll acknowledgment, an Approved decision, decision actor and timestamp, Payroll-authorized values recorded to match the requested values, and transition to Awaiting Implementation.
+The Job Title test demonstrated Payroll acknowledgment, an Approved decision, decision actor and timestamp, Payroll-authorized values recorded to match the requested values, and transition to Awaiting Implementation.
 
 ### Rejected Path
 
-ECI-000004 represented a Department change. The test demonstrated Payroll acknowledgment, a Rejected decision, required rejection reason, decision actor and timestamp, and transition to Rejected.
+The Department test demonstrated Payroll acknowledgment, a Rejected decision, required rejection reason, decision actor and timestamp, and transition to Rejected.
 
 ### Modified Work Location Path
-
-ECI-000005 represented a Work Location change.
 
 Requested:
 
 ```text
-Work Location: Ala Moana
+Work Location: originally requested location
 Effective Date: November 1, 2026
 ```
 
 Payroll authorized:
 
 ```text
-Work Location: Waikiki
+Work Location: alternate location
 Effective Date: November 15, 2026
 ```
 
@@ -379,13 +377,13 @@ The test demonstrated that the original request remained intact while Payroll's 
 
 ### Record Implementation: Generic Job Title Path
 
-ECI-000003 was subsequently used to acceptance-test the generic Record Implementation path after its Approved Payroll decision.
+The job title test item was subsequently used to acceptance-test the generic Record Implementation path after its Approved Payroll decision.
 
 The implementation was entered independently as:
 
 - Implemented Value: Senior Guest Services Manager
 - Implemented Effective Date: October 1, 2026
-- Payroll Transaction ID: `TEST-PAY-ECI000003-001`
+- Payroll Transaction ID: synthetic test value recorded
 
 The Flow recorded the implementation evidence without assigning the final status directly. Lifecycle automation derived the item status as Implemented after the required implementation facts were present.
 
@@ -393,23 +391,23 @@ The record-page experience also transitioned correctly: the `Record Implementati
 
 ### Record Implementation: Structured Work Location Path
 
-ECI-000005 was subsequently used to acceptance-test the structured Work Location implementation path.
+The work location test item was subsequently used to acceptance-test the structured Work Location implementation path.
 
 The complete audit chain was:
 
 ```text
 Requested
-Work Location: Ala Moana
+Work Location: originally requested location
 Effective Date: November 1, 2026
 
 Payroll Authorized
-Work Location: Waikiki
+Work Location: alternate location
 Effective Date: November 15, 2026
 
 Implemented
-Work Location: Waikiki
+Work Location: alternate location
 Effective Date: November 15, 2026
-Payroll Transaction ID: TEST-PAY-ECI000005-001
+Payroll Transaction ID: synthetic test value recorded
 ```
 
 The implemented Work Location was explicitly selected during implementation rather than copied automatically from the Payroll-authorized Work Location. The Flow preserved both the implemented display value and the structured `Implemented_Work_Location__c` relationship.
@@ -423,7 +421,7 @@ These two tests demonstrate both implementation branches:
 
 ### Negative Eligibility Test
 
-After ECI-000005 had already received a Modified decision, the record was passed directly into version 7 of `Process_Employment_Change` using Flow Debug.
+The negative test exercised the processing Flow with an item that already had a Modified decision.
 
 At test time:
 

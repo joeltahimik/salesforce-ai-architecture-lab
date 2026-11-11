@@ -3,7 +3,6 @@
 **Initial verification:** 2026-11-08
 
 **Environment:** Personal Salesforce Developer Edition  
-**Org alias:** `aloha-dev`  
 **Repository:** `joeltahimik/salesforce-ai-architecture-lab`
 
 ## 1. Agentforce Configuration
@@ -35,7 +34,7 @@ Dedicated permission set:
 
 `Aloha_Workforce_AI_Read_Only`
 
-The permission set was successfully deployed to `aloha-dev` and assigned to
+The permission set was successfully deployed to the development org and assigned to
 the dedicated Einstein Agent User.
 
 ### Object Permissions
@@ -116,22 +115,19 @@ public group.
 
 Parent Employment Change Request:
 
-- Name: ECR-000004
 - Owner: test administrator
 - Processing Status: Completed
 - Outcome Summary: Successful
 
-Child Employment Change Item:
-
-- Name: ECI-000007
+The sample included a child Employment Change Item.
 
 ### UserRecordAccess Results
 
 | User | Record | Read | Edit | Delete |
 |---|---|---|---|---|
-| Agentforce execution user | ECR-000004 | No | No | No |
-| Agentforce execution user | ECI-000007 | No | No | No |
-| Payroll Processor | ECR-000004 | Yes | No | No |
+| Agentforce execution user | Sample ECR | No | No | No |
+| Agentforce execution user | Sample ECI | No | No | No |
+| Payroll Processor | Sample ECR | Yes | No | No |
 
 Payroll Processor's ECR access is consistent with its direct
 public-group membership and the existing ECR sharing rule.
@@ -161,11 +157,9 @@ automatically enforce the requesting employee's record access.
 On November 9, 2026, one diagnostic invocation from the directly authenticated
 Payroll Processor session in Lightning Experience passed. The temporary
 `Aloha_Workforce_Identity_Pilot` V1 invoked `AlohaAgentIdentityProbe`. Its
-restricted Apex log contained the expected WARN marker, and the principal
-reported by `UserInfo.getUserId()` matched both the authenticated Payroll
-Processor and the Apex log's `LogUserId`. The agent returned only a completion
-message. The [Stage 3B checkpoint](../development-checkpoint.md#execution-identity-pilot-runtime-verification--2026-11-09)
-records the invocation time, diagnostic marker, and verified rollback.
+execution principal matched the authenticated Payroll Processor and the Apex
+log principal. The agent returned only a completion message. The [Stage 3B checkpoint](../development-checkpoint.md#execution-identity-pilot-runtime-verification--2026-11-09)
+records the verified outcome and rollback.
 
 This finding applies to the tested Employee Agent, Apex action, and Lightning
 session. The probe performs no database operations. CRUD, field-level security,

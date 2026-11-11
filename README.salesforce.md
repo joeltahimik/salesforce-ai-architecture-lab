@@ -18,8 +18,6 @@ Before you start, make sure you have:
 Your DX project follows this structure:
 
 - **`force-app/main/default/`** - Your metadata source files live in this default package directory. You can configure additional package directories in the `sfdx-project.json` file.
-- **`config/`** - Scratch org definitions and project settings
-- **`scripts/`** - Automation scripts for common tasks
 - **`sfdx-project.json`** - Project manifest that defines package directories, namespace, API version, and other project-level settings
 
 See [Salesforce DX Project Configuration](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_ws_config.htm).
@@ -34,7 +32,7 @@ Here are common CLI commands that you'll use the most:
 
 - `sf org login web`: Authorize an org
 - `sf org open`: Open your org in a browser
-- `sf org create scratch`: Create a scratch org
+- `sf org create scratch`: Create a scratch org using a separately supplied scratch-org definition
 - `sf project deploy start`: Deploy metadata to your org
 - `sf project retrieve start`: Retrieve metadata from your org
 - `sf template generate <artifact>`: Scaffold new components, such as Apex classes and triggers, LWC components, Lightning apps, and more

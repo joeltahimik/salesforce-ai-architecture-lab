@@ -4,7 +4,7 @@
 
 - Project: Salesforce AI Architecture Lab
 - Application: Aloha Workforce Operations
-- Salesforce Org: aloha-dev
+- Environment: Salesforce development org
 - Test Date: November 3, 2026 (Hawaii)
 - Test Type: Functional and Data Integrity Regression
 - Overall Result: PASS
@@ -22,7 +22,7 @@ legitimate implementation through the guided Screen Flow.
 
 **Result: PASS**
 
-Test Record: ECI-000006
+Test Record: submitted change item
 
 Attempted to directly update Item_Status__c to Implemented
 through the Salesforce CLI without the required Payroll decision
@@ -41,12 +41,9 @@ Actual:
 **Result: PASS**
 
 Test Records:
-- Service Request: 00001030
-- Employment Change Request: ECR-000004
-- Employment Change Item: ECI-000007
-
-Employee: Kai Nakamura
-Employer: Koa Surf & Hospitality LLC
+- Service Request: sample case
+- Employment Change Request: sample request
+- Employment Change Item: job title change item
 
 Requested Change:
 - Change Type: Job Title
@@ -64,7 +61,7 @@ Actual:
 
 **Result: PASS**
 
-Test Record: ECI-000007
+Test Record: job title change item
 
 Actual:
 - Payroll Decision: Approved
@@ -80,12 +77,12 @@ Approval did not automatically mark the change Implemented.
 
 **Result: PASS**
 
-Test Record: ECI-000007
+Test Record: job title change item
 
 Implementation Evidence:
 - Implemented Value: Senior Operations Coordinator - TEST
 - Implemented Effective Date: 2026-11-16
-- Payroll Transaction ID: TEST-PAY-ECI000007-001
+- Payroll Transaction ID: synthetic test value recorded
 
 Actual:
 - The Record Implementation Screen Flow completed successfully.
@@ -96,7 +93,7 @@ Actual:
 
 **Result: PASS**
 
-Test Record: ECR-000004
+Test Record: sample request
 
 Actual:
 - Processing Status: Completed

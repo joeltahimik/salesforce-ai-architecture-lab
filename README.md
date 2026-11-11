@@ -14,7 +14,7 @@ and provide a reliable starting point when returning to the project.
 | Resource | Purpose |
 | --- | --- |
 | [Architecture Refresher](docs/architecture-refresher.md) | Business context, data model, processing lifecycle, security design, and knowledge checks |
-| [Development Checkpoint](docs/development-checkpoint.md) | Current sprint, completed tests, outstanding issues, and exact next steps |
+| [Development Checkpoint](docs/development-checkpoint.md) | Project milestones, verified outcomes, and open design questions |
 | [Employment Change Processing](docs/employment-change-processing.md) | Detailed Payroll decision and implementation architecture |
 
 **Returning after a break?** Start with the Architecture Refresher,
