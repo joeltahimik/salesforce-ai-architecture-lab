@@ -1,0 +1,60 @@
+<template>
+  <section class="dashboard" aria-labelledby="dashboard-heading">
+    <header class="dashboard-header">
+      <h2 id="dashboard-heading" class="slds-text-heading_large">
+        Employer Dashboard
+      </h2>
+      <p class="demo-note">
+        Demonstration data · Fictional workforce and requests
+      </p>
+    </header>
+
+    <dl class="summary" aria-label="Dashboard summary">
+      <template for:each={summary} for:item="metric">
+        <div key={metric.key} class="summary-card slds-card">
+          <dt>{metric.label}</dt>
+          <dd>{metric.count}</dd>
+        </div>
+      </template>
+    </dl>
+
+    <div class="detail-grid">
+      <section
+        class="detail-card slds-card"
+        aria-labelledby="workforce-heading"
+      >
+        <h3 id="workforce-heading" class="slds-text-heading_small">
+          My Workforce
+        </h3>
+        <ul class="records slds-has-dividers_bottom-space" role="list">
+          <template for:each={workforce} for:item="employee">
+            <li key={employee.key} class="record">
+              <div class="record-detail">
+                <p class="record-title">{employee.name}</p>
+                <p class="record-description">{employee.role}</p>
+              </div>
+              <span class={employee.statusClass}>{employee.status}</span>
+            </li>
+          </template>
+        </ul>
+      </section>
+
+      <section class="detail-card slds-card" aria-labelledby="requests-heading">
+        <h3 id="requests-heading" class="slds-text-heading_small">
+          Employment Change Requests
+        </h3>
+        <ul class="records slds-has-dividers_bottom-space" role="list">
+          <template for:each={requests} for:item="request">
+            <li key={request.key} class="record">
+              <div class="record-detail">
+                <p class="record-title">{request.title}</p>
+                <p class="record-description">{request.employee}</p>
+              </div>
+              <span class={request.statusClass}>{request.status}</span>
+            </li>
+          </template>
+        </ul>
+      </section>
+    </div>
+  </section>
+</template>

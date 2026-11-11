@@ -6,11 +6,11 @@
 
 ## Current Project State
 
-**Latest milestone:** Employer Portal Stage 2 created and verified 65 synthetic
-records. Read-only Plan verified zero proposed creates both after seeding and
-after the intentional Account display-name changes.
+**Latest milestone:** Employer Dashboard Phase 1 was deployed to the development org
+and visually verified on the Employer Portal in desktop Builder Preview.
+The site remains unpublished with Public Access disabled.
 
-**Next proposed phase:** Experience Cloud Employer Portal (planned).
+**Next proposed phase:** Employer Dashboard Phase 2, pending approval.
 
 ## Completed Architecture
 
@@ -76,8 +76,7 @@ runtime permissions require separate testing.
 
 ## Future Roadmap
 
-The next proposed development phase is the **Experience Cloud Employer
-Portal**. This phase is planned. The proposed design work covers employer
+Future design work for the **Experience Cloud Employer Portal** covers employer
 sign-in, employer-specific access to workforce requests, and tests that
 verify users cannot see another employer's records. The existing request
 lifecycle and Payroll processing boundaries apply to the proposed design.
@@ -493,3 +492,30 @@ The All Employers and All Workforce Contacts list views exclude Developer
 Edition sample records using the sample owner's alias. This filter controls
 list results, while Salesforce record sharing controls record access. See the
 [Employer Portal fixture and lifecycle details](testing/employer-portal-test-data.md).
+
+### Experience Cloud Employer Dashboard Phase 1
+
+The **Aloha Workforce Employer Portal** uses the **Build Your Own (LWR)**
+template at the `employers` URL path. Public Access is disabled and the site
+is unpublished. The homepage welcome section was configured manually in
+Experience Builder. The initial branding uses navy, blue, and white.
+
+The `employerDashboard` Lightning web component was deployed to the
+development org. Salesforce reported success for one component with zero
+errors and zero warnings. A post-deployment query
+confirmed the `lightningCommunity__Page` target and Builder exposure.
+
+**Local validation.** The LWC compiled successfully, its metadata passed
+local checks, and ESLint, Prettier, and both Jest tests passed. The compiled
+component rendered in local Chromium at 1,200, 768, 390, and 320 px without
+horizontal overflow.
+
+**Manual Salesforce verification.** The project owner added **Employer
+Dashboard** in Experience Builder and visually verified it in desktop
+Builder Preview.
+
+The dashboard shows three summary cards, My Workforce, and Employment Change
+Requests using visibly labeled fictional demonstration data. The portal has
+no external users or live dashboard data integration. Phase 2 remains
+pending approval. Future live access must enforce authenticated employer
+identity, object permissions, and record-level sharing.

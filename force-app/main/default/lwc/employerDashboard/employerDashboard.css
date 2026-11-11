@@ -1,0 +1,141 @@
+:host {
+  display: block;
+  color: #102a49;
+  --dashboard-border: #d8e4f0;
+  --dashboard-muted: #425b75;
+  --dashboard-accent: #1766b7;
+}
+
+.dashboard {
+  box-sizing: border-box;
+  display: grid;
+  gap: 1.25rem;
+  padding: clamp(1rem, 3vw, 2rem);
+  border: 1px solid var(--dashboard-border);
+  border-radius: 1rem;
+  background: #f4f8fc;
+}
+
+.dashboard h2,
+.dashboard h3,
+.dashboard p,
+.summary,
+.records {
+  margin: 0;
+}
+
+.dashboard-header h2 {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.dashboard-header .demo-note {
+  margin-top: 0.5rem;
+  color: var(--dashboard-muted);
+  font-size: 0.875rem;
+}
+
+.summary,
+.detail-grid {
+  display: grid;
+  gap: 1rem;
+  align-items: stretch;
+}
+
+.summary {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr));
+}
+
+.detail-grid {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 27rem), 1fr));
+}
+
+.summary-card,
+.detail-card {
+  min-width: 0;
+  margin: 0;
+  border: 1px solid var(--dashboard-border);
+  border-radius: 0.75rem;
+  background: #fff;
+}
+
+.summary-card {
+  padding: 1rem 1.125rem;
+  border-top: 3px solid var(--dashboard-accent);
+}
+
+.summary-card dt {
+  color: var(--dashboard-muted);
+  font-weight: 600;
+}
+
+.summary-card dd {
+  margin: 0.375rem 0 0;
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.detail-card h3 {
+  padding: 1rem 1.125rem;
+  border-bottom: 1px solid var(--dashboard-border);
+  font-size: 1.125rem;
+  font-weight: 700;
+}
+
+.records {
+  padding: 0 1.125rem;
+  list-style: none;
+}
+
+.record {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.875rem;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.875rem 0;
+}
+
+.record + .record {
+  border-top: 1px solid var(--dashboard-border);
+}
+
+.record-detail {
+  flex: 1 1 10rem;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.record-title {
+  font-weight: 650;
+}
+
+.record-description {
+  color: var(--dashboard-muted);
+  font-size: 0.875rem;
+}
+
+.status {
+  padding: 0.25rem 0.625rem;
+  border-radius: 1rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.status--positive {
+  color: #14543c;
+  background: #e6f5ed;
+}
+
+.status--progress {
+  color: #134f91;
+  background: #e5f1ff;
+}
+
+.status--neutral {
+  color: #4c5262;
+  background: #eef0f4;
+}
