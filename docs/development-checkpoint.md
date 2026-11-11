@@ -1,13 +1,14 @@
 # Aloha Workforce Solutions | Development Checkpoint
 
-**Last checkpoint review:** 2026-11-09
+**Last checkpoint review:** 2026-11-10
 
 **Start here:** [Architecture Refresher](architecture-refresher.md)
 
 ## Current Project State
 
-**Latest milestone:** Stage 3C and 3D platform profile hardening passed API
-verification. Direct-login regression checks are pending.
+**Latest milestone:** The targeted Employment sharing test passed in Lightning,
+and API checks verified cleanup. Stage 3C and 3D profile hardening passed API
+verification. The broader direct-login regression checks are pending.
 
 **Next proposed phase:** Experience Cloud Employer Portal (planned).
 
@@ -524,3 +525,29 @@ Processor can open Aloha Workforce Operations, Work Locations, and the
 permitted ECR and ECI. Confirm Aloha StandardTester can open their normal
 Lightning landing page and is denied access to the same ECR and ECI. Use the
 existing test records and leave them unsaved.
+
+### Employment Record Access Test
+
+**Root cause.** Payroll Processor had object-level Read on `Employment__c`.
+Internal and external organization-wide defaults were Private, there were no
+Employment sharing rules, and the test record had only its owner share. The
+submitted ECR sharing rule and ECI access inherited from the parent ECR did not
+grant access to the Employment referenced by the ECR lookup.
+
+**Lightning verification.** A temporary manual share granted Read Only on one
+Employment directly to Payroll Processor. All four interactive checks passed.
+Payroll Processor found the record in the Employments list, opened it, confirmed
+direct editing was unavailable, and viewed the fields required for payroll
+processing.
+
+**Cleanup verified.** The temporary share was deleted and the original owner
+share remained intact. Salesforce API checks confirmed that Payroll Processor
+again had neither Read nor Edit on the test Employment and Aloha StandardTester
+remained denied. On the sampled ECRs and ECIs, Payroll Processor retained ECR
+Read and ECI Read/Edit, and Aloha StandardTester remained denied. The checked
+object and field permissions, permission-set assignments, payroll group
+membership, and Employment sharing defaults matched preflight.
+
+**Agreed architecture (Option A).** Payroll Processor may read authorized
+Employment records. Employment changes must go through the ECR/ECI workflow.
+Designing permanent, least-privilege Employment record sharing is future work.

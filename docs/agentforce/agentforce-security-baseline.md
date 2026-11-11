@@ -191,6 +191,21 @@ sharing, and Agentforce configuration were unchanged. Direct-login checks are
 pending. See the [platform profile checkpoint](../development-checkpoint.md#platform-user-least-privilege-hardening)
 for the test scope, backup status, and follow-up checks.
 
+### Employment Record Access
+
+`Employment__c` has Private internal and external defaults. The submitted ECR
+sharing rule grants access to qualifying ECRs, and ECIs inherit access from
+their parent ECR. The Employment lookup on the ECR does not grant record access
+to Employment. Payroll Processor has object-level Read and requires an
+Employment record share or other applicable record-level grant.
+
+Option A is the agreed design. Payroll Processor may read authorized
+Employment records, and employment changes must go through ECR/ECI. A
+temporary Read Only manual share passed the Lightning test and was removed.
+Permanent Employment sharing remains future design work. See the
+[Employment record access test](../development-checkpoint.md#employment-record-access-test)
+for the interactive checks and cleanup verification.
+
 ## 7. Open Security and Implementation Questions
 
 - Verify trusted requester identity for each proposed retrieval action and
