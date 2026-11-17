@@ -163,6 +163,24 @@ Payroll Processor could otherwise change Requested Value.
 The security sprint remains incomplete. Lifecycle-field protection,
 Flow access, profile hardening, and regression tests require further work.
 
+### Employer Portal
+
+The published Phase 1 Employer Portal gives pilot employers read-only
+workforce access. The Sharing Set maps the signed-in user's primary
+Contact Account to `Employment__c.Employer__c`. The Employer Dashboard
+counts accessible Active Employments, My Workforce lists the employer's
+records, and `employerEmploymentDetail` reads approved fields with
+Lightning Data Service. Salesforce sharing and field-level security
+govern the result.
+
+Phase 2 adds authenticated submission and tracking for one Work Location
+Change per request. A successful employer submission becomes visible
+immediately to that employer. HR reviews it before stamping the Payroll
+handoff date. The ECR/ECI lifecycle remains authoritative. The employer
+sees the request summary and item status, while internal notes, Payroll
+identifiers, and evidence remain private. See the
+[Phase 1 evidence and Phase 2 starting point](development-checkpoint.md#phase-1-employer-portal-completion).
+
 ## 7. Knowledge Checks
 
 ### Question 1: Authorization versus Implementation

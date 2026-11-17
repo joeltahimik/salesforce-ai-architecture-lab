@@ -1,16 +1,18 @@
 # Aloha Workforce Solutions | Development Checkpoint
 
-**Last checkpoint review:** 2026-11-10
+**Last checkpoint review:** 2026-11-16
 
 **Start here:** [Architecture Refresher](architecture-refresher.md)
 
 ## Current Project State
 
-**Latest milestone:** Employer Dashboard Phase 1 was deployed to the development org
-and visually verified on the Employer Portal in desktop Builder Preview.
-The site remains unpublished with Public Access disabled.
+**Latest milestone:** The [Phase 1 Employer Portal MVP](#phase-1-employer-portal-completion)
+is complete in the published Experience Cloud pilot on `aloha-dev`
+(Org ID `00Dak00001EqrL3EAJ`).
 
-**Next proposed phase:** Employer Dashboard Phase 2, pending approval.
+**Next step:** Begin the [Phase 2 Work Location Change MVP](#phase-2-handoff)
+with the internal HR-to-Payroll handoff. The remaining Phase 1 negative-route
+browser checks are a low-priority follow-up.
 
 ## Completed Architecture
 
@@ -516,6 +518,224 @@ Builder Preview.
 
 The dashboard shows three summary cards, My Workforce, and Employment Change
 Requests using visibly labeled fictional demonstration data. The portal has
-no external users or live dashboard data integration. Phase 2 remains
-pending approval. Future live access must enforce authenticated employer
+no external users or live dashboard data integration at the Phase 1 checkpoint.
+Future live access must enforce authenticated employer
 identity, object permissions, and record-level sharing.
+
+### Experience Cloud Employer Dashboard Phase 2 | Personalized Welcome Header
+
+The dashboard uses the Salesforce session's user ID and Lightning Data Service
+to read the user's name and follow `User.ContactId` → `Contact.AccountId` →
+`Account.Name`. Guest sessions skip identity reads. Missing links and denied
+reads fall back to neutral text, preserving any available user name. The three
+summary cards, workforce, and requests still use labeled demonstration data.
+No Apex, org query, or profile and sharing changes were needed for local work.
+
+**Local verification.** All seven Jest tests passed, covering the personalized
+header, missing Contact and Account links, loading, denied reads, and the existing
+demonstration dashboard. ESLint, Prettier for the LWC bundle, and
+`git diff --check` passed.
+
+**Deployment and browser verification.** Deployment `0Afak00000sIRSUCA4`
+succeeded in `aloha-dev` with only the `employerDashboard` bundle. The project
+owner subsequently published the site and confirmed that the authenticated
+pilot session displayed Aven Harborfield and Harbor Lantern Hospitality.
+This confirms the identity header; the workforce and request cards still show
+demonstration data.
+
+### Employer Portal Phase 2 | Read-only security verification
+
+Focused Salesforce reads verified that Aven is active and portal-enabled, has
+the Customer Community license and Aloha Employer Employment Pilot profile,
+and is linked through Contact to Harbor Lantern Hospitality. The assigned
+sources were the profile-backed permission set and Aloha Employer Employment
+Read; no permission set group assignment was returned.
+
+- **Object permissions — PASS (configuration).** Employment Read is granted.
+  Neither source granted Create, Edit, Delete, View All Records, Modify All
+  Records, or View All Fields for Employment. Neither source granted View All
+  Data, Modify All Data, or API Enabled.
+- **Field permissions — PASS (configuration).** The only explicit Employment
+  field grants returned were Read on Job Title and Employment Status; both
+  were non-editable. Portal rendering and exposure through record responses
+  still require verification.
+- **Sharing Set — PASS (configuration).** Aloha Employer Employment Access
+  targets Aloha Employer Employment Pilot and maps `Contact.Account` to
+  `Employment__c.Employer__c` with Read access. The exact set name supersedes
+  the proposed name in the
+  [Phase 2 security design](experience-cloud/employer-portal-phase2-security-design.md).
+- **Record access — PASS (diagnostic).** An administrator read identified five
+  fixtures for each employer. A separate `UserRecordAccess` query evaluated
+  Aven on all 15: Read on 5 Harbor Lantern, 0 Fernline Food Distribution, and
+  0 Blue Reef Facilities. Edit and Delete were false on all 15. The diagnostic
+  does not exercise the portal or account for restriction rules.
+- **External Employment session — partial verification.** The project owner
+  confirmed Aven signed in, saw five records in the standard Employment List,
+  and opened an authorized Employment Detail record. Direct foreign-record
+  URL tests and a full review of visible fields and actions are still pending.
+
+### Employer Portal Phase 2 | UI release | 2026-11-11
+
+The dashboard now uses a navy welcome header with the greeting as a heading
+and a separate employer identity panel that stacks on narrow screens. The
+demonstration notice now explicitly covers the counts and both record sections
+and is linked to them for assistive technology. The three metrics, workforce
+and request examples, identity reads, and missing-data fallbacks are unchanged.
+All seven Jest tests, ESLint, LWC formatting, and `git diff --check` passed.
+Deployment `0Afak00000sIl9RCAS` succeeded in `aloha-dev`
+(org `00Dak00001EqrL3EAJ`) with one component,
+`LightningComponentBundle:employerDashboard`, and zero component errors.
+
+**Read-only metadata inspection.** No site source was present in the workspace.
+Salesforce retrieval `09Sak00000wtMcnEAE` exported only the named employer
+portal `DigitalExperienceBundle`, its `DigitalExperienceConfig`, and its
+Default Navigation menu to a temporary folder. The enhanced LWR bundle
+confirmed the Home, Employment List, and Employment Detail routes and views.
+No site metadata was edited or added to the repository.
+
+**Owner-reported Builder changes and publication.** The owner reported
+successful publication on November 11, 2026, after these changes:
+
+- Renamed the **Employment List** navigation item to **My Workforce**.
+- Added the **My Workforce** heading and **Back to Home** link on Employment
+  List, retaining the standard Record List component.
+- Changed the Employment Detail heading to **Employment Details** and added
+  **Back to My Workforce**, retaining the standard Record Detail component.
+- Moved Rich Content into the appropriate page-specific **Column 1** region
+  to resolve unwanted visibility on other pages.
+
+### Employer Portal Phase 2 | Active Employments and second pilot | 2026-11-11
+
+**Active Employments dashboard.** Deployment `0Afak00000sJPoPCAW` succeeded
+in `aloha-dev` (org `00Dak00001EqrL3EAJ`) with only the
+`employerDashboard` LightningComponentBundle and zero errors or warnings.
+The GraphQL wire adapter uses Lightning Data Service in the authenticated
+user's context to count all accessible `Employment__c` records where
+`Employment_Status__c = Active`. The metric links to the My Workforce
+**All** list. All 13 Jest tests, ESLint, LWC formatting, and
+`git diff --check` passed. No Apex controller was introduced.
+
+**Second employer pilot.** The project owner reported successful provisioning,
+invitation, portal login, and working portal functionality for Fenn Fernridge
+of Fernline Food Distribution, using the Customer Community license and
+**Aloha Employer Employment Pilot** profile. The existing read-only Sharing
+Set maps `Contact.Account` to `Employment__c.Employer__c`. An administrator's
+read-only query verified five Fernline fixtures: three Active, one Leave, and
+one Terminated. In manual portal testing on November 11, 2026, the project
+owner verified that Fenn's live dashboard displayed exactly **3 Active
+Employments** and My Workforce displayed exactly **5 Fernline Employment
+records**.
+
+**Cross-employer direct URL test — PASS (observed, November 11, 2026).**
+Fenn Fernridge opened the direct URL for a Harbor Lantern Hospitality
+Employment record. Chrome Network showed record requests returning HTTP
+404 and 400, and the portal displayed no foreign record data. Aven
+Harborfield successfully opened the exact same record as the positive
+control. The result covers this Fenn-to-Harbor Lantern test.
+
+**Historical Experience Cloud Record Detail issue.** In Fenn's session, the page
+continued to show a loading spinner after the failed record requests.
+The Phase 1 completion entry below records the replacement component.
+
+**Employment full name.** `Employment__c.Full_Name__c` is a Formula (Text)
+field used to display employee names without linking to Contact pages that
+portal users cannot access. The original verified formula was
+`Employee__r.FirstName + ' ' + Employee__r.LastName`. The owner subsequently
+reported updating it to use `TRIM` and `BLANKVALUE` for missing names. The revised
+formula has not been independently retrieved from Salesforce. `Employee__c`
+remains the underlying Contact lookup.
+
+### Phase 1 Employer Portal completion
+
+The published LWR portal provides the Employer Dashboard, the live
+**Active Employments** metric, the **My Workforce** record list, and
+read-only **Employment Details**. The dashboard count reflects records
+visible to the signed-in employer. My Workforce leads to Employment Details,
+with return links to My Workforce and Home.
+
+DevTools located the old spinner inside the standard Record Detail form,
+and Experience Builder offered no record-load error setting. The custom
+`employerEmploymentDetail` LWC uses Lightning Data Service `getRecord` in
+the pilot user's context. It displays Employee Name, Employment Number,
+Job Title, and Employment Status, subject to field-level access. It has
+no edit actions or employee Contact links. The centered SLDS card uses
+two columns on desktop and one on mobile, with a neutral
+**Employment details unavailable** message and a status announcement for
+loading and failed reads. The latest bundle deployment,
+`0Afak00000t63ZpCAI`, succeeded in `aloha-dev` with one component and
+zero deployment errors or warnings.
+
+**Published portal pilot evidence (reported by Joel).**
+
+| Pilot | Own Employment records | Active Employments | Browser verification | Foreign Employment access |
+| --- | ---: | ---: | --- | --- |
+| Fenn Fernridge, Fernline Food Distribution | 5 | 3 | Passed all five checks | Harbor Lantern and Blue Reef denied |
+| Aven Harborfield, Harbor Lantern Hospitality | 5 | 3 | Passed all five checks | Fernline and Blue Reef denied |
+
+Blue Reef Facilities served as the negative control for both signed-in
+pilots. A separate CLI `UserRecordAccess` diagnostic covered all 15
+fixtures per pilot. Each could read five own records, zero foreign records,
+and edit or delete none. The Sharing Set maps `Contact.Account` to
+`Employment__c.Employer__c` with Read access.
+
+**Automated component verification.** All eight focused Jest tests
+passed. Mocked HTTP 400, 403, and 404 responses and missing record context
+produce the same neutral unavailable state. The component shows no
+Employment details or persistent loading state in those cases.
+
+**Low-priority browser follow-up.** Independently verify published routes
+for a valid-format nonexistent Employment ID, a malformed ID, and a route
+with the ID omitted. Computer Use stopped before navigation because it
+could not reliably identify the active Chrome URL. These three routes
+remain unverified in the browser. The passing Jest cases cover component
+behavior when the component mounts. LWR can reject a route before that
+point.
+
+**Permission-set source discrepancy.** Live checks found read-only field
+grants for `Employment__c.Full_Name__c`, `Job_Title__c`, and
+`Employment_Status__c` in `Aloha_Employer_Employment_Read`. The local
+permission-set metadata contains only the Job Title and Employment Status
+grants. Compare the local source with the verified org grant and reconcile
+the difference before a future deployment of this permission set so the
+employee display-name access is preserved. This checkpoint leaves the
+permission set untouched.
+
+### Phase 2 handoff
+
+The approved MVP lets an authenticated employer representative submit one
+Work Location Change for an eligible Employment in their own organization.
+After a successful submission, the employer can immediately see the
+request summary and individual change status. HR reviews the request
+before forwarding it to Payroll. The existing ECR/ECI decision,
+implementation, and aggregation lifecycle remains authoritative.
+
+Reuse the Case, Case Employment, ECR, and ECI package. Resolve the tenant
+from the authenticated user's Contact and primary Account, validate the
+Employment and Work Location against that Account, and create the package
+atomically. Use the planned server-managed ECR Account lookup for
+read-only sharing to the employer. Keep internal and legacy ECRs withheld
+by default. Any later internal release requires an explicit controlled
+action. ECIs inherit record access from the ECR, so every child on a
+visible ECR must be safe for employer disclosure. Keep Case, internal
+notes, Payroll IDs and evidence, and sensitive processing fields private.
+
+**First implementation task:** Build and verify the internal HR-only
+**Forward to Payroll** action and Payroll entry-point guard on a synthetic
+portal-originated Work Location request. Reuse
+`Payroll_Submitted_Date__c` for the one-time handoff and existing Payroll
+share. Verify that Payroll cannot process the request before HR forwards
+it and can use the existing lifecycle afterward. Preserve the internal
+submission path. Next, prove tenant sharing and field access on synthetic
+records before connecting portal submission and tracking. See the
+[Phase 2 security design](experience-cloud/employer-portal-phase2-security-design.md).
+
+### Remaining development priorities
+
+1. **Employer-submitted Work Location Changes.** Follow the
+   [Phase 2 handoff](#phase-2-handoff).
+2. **Internal Agentforce request lookup.** HR and Payroll can answer status
+   questions faster. This has strong Agentforce learning and demo value and
+   indirect employer value. The existing identity probe is a starting point;
+   record and field authorization still need proof for each retrieval
+   action. Codex can review the draft Flow and prepare authorization tests.
+   Action deployment and activation need separate approval.

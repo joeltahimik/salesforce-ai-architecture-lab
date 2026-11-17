@@ -196,9 +196,19 @@ Employment record share or other applicable record-level grant.
 Option A is the agreed design. Payroll Processor may read authorized
 Employment records, and employment changes must go through ECR/ECI. A
 temporary Read Only manual share passed the Lightning test and was removed.
-Permanent Employment sharing remains future design work. See the
+Permanent Employment sharing for Payroll remains future design work. See the
 [Employment record access test](../development-checkpoint.md#employment-record-access-test)
 for the interactive checks and cleanup verification.
+
+**Employer Portal boundary.** Employer pilots use a separate read-only
+Sharing Set that maps their primary Contact Account to the Employment's
+employer Account. Focused org checks showed that Fenn and Aven could each
+read five own records and zero foreign records across the 15 fixtures.
+The employer permission set grants read-only access to the approved fields.
+The live `Full_Name__c` grant is missing from the local permission-set
+metadata and should be reconciled before a future deployment of that set.
+See the [Phase 1 checkpoint](../development-checkpoint.md#phase-1-employer-portal-completion)
+for the pilot evidence and the separate browser verification gap.
 
 ## 7. Open Security and Implementation Questions
 
